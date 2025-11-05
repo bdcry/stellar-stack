@@ -1,4 +1,7 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useState } from 'react';
+
+import IngredientsCategory from './ingredients-category/ingredients-category';
 
 import type { TIngredient } from '@utils/types';
 
@@ -11,41 +14,59 @@ type TBurgerIngredientsProps = {
 export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  console.log(ingredients);
+  const [isActiveTab, setIsActiveTab] = useState('bun');
 
+  const groups = {
+    bun: ingredients.filter((item) => item.type === 'bun'),
+    main: ingredients.filter((item) => item.type === 'main'),
+    sauce: ingredients.filter((item) => item.type === 'sauce'),
+  };
+
+  const handleTabClick = (tabName: string): void => {
+    setIsActiveTab(tabName);
+    const element = document.getElementById(tabName);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
           <Tab
             value="bun"
-            active={true}
-            onClick={() => {
-              /* TODO */
-            }}
+            active={isActiveTab === 'bun'}
+            onClick={() => handleTabClick('bun')}
           >
             Булки
           </Tab>
           <Tab
             value="main"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
+            active={isActiveTab === 'main'}
+            onClick={() => handleTabClick('main')}
           >
             Начинки
           </Tab>
           <Tab
             value="sauce"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
+            active={isActiveTab === 'sauce'}
+            onClick={() => handleTabClick('sauce')}
           >
             Соусы
           </Tab>
         </ul>
       </nav>
+      <div className={styles.ingredients_list}>
+        <div id="bun">
+          <IngredientsCategory ingredientsItems={groups.bun} />
+        </div>
+        <div id="main">
+          <IngredientsCategory ingredientsItems={groups.main} />
+        </div>
+        <div id="sauce">
+          <IngredientsCategory ingredientsItems={groups.sauce} />
+        </div>
+      </div>
     </section>
   );
 };

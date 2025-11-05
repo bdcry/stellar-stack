@@ -1,0 +1,38 @@
+import IngredientsCard from '../ingredients-card/ingredients-card';
+
+import type { TIngredient } from '@/utils/types';
+
+import styles from './ingredients-category.module.css';
+
+type TIngredientsItemsProps = {
+  ingredientsItems: TIngredient[];
+};
+
+type TCategoryTitles = Record<string, string>;
+
+const CATEGORY_TITLES: TCategoryTitles = {
+  bun: 'Булки',
+  main: 'Начинки',
+  sauce: 'Соусы',
+};
+
+const IngredientsCategory = ({
+  ingredientsItems,
+}: TIngredientsItemsProps): React.JSX.Element => {
+  const categoryName = ingredientsItems[0].type;
+
+  const title = CATEGORY_TITLES[categoryName];
+
+  return (
+    <>
+      <h2 className="text mt-10 mb-6">{title}</h2>
+      <div className={styles.ingredients_category}>
+        {ingredientsItems.map((ingredient) => (
+          <IngredientsCard key={ingredient._id} {...ingredient} />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default IngredientsCategory;
