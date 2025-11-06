@@ -26,11 +26,13 @@ const IngredientsCategory = ({
   return (
     <>
       <h2 className="text mt-10 mb-6">{title}</h2>
-      <div className={styles.ingredients_category}>
+      <ul className={styles.ingredients_category}>
         {ingredientsItems.map((ingredient) => (
-          <IngredientsCard key={ingredient._id} {...ingredient} />
+          <li key={ingredient._id}>
+            <IngredientsCard {...ingredient} />
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 };

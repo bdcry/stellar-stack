@@ -20,7 +20,7 @@ const IngredientsCard = ({
         <p>{price}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <h3 className="text text_type_main-small text_color_inactive">{name}</h3>
+      <h3 className="text text_type_main-small">{name}</h3>
       <Counter count={1} />
     </div>
   );
