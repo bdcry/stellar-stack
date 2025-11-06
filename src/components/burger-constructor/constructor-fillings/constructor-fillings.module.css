@@ -1,0 +1,8 @@
+.constructor_fillings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 568px;
+  padding: 0;
+  list-style: none;
+}
