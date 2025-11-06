@@ -15,7 +15,6 @@
 }
 
 .ingredients_list {
-  margin-bottom: 40px;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-padding-top: 40px;
