@@ -41,18 +41,18 @@ export const BurgerIngredients = ({
             Булки
           </Tab>
           <Tab
-            value="main"
-            active={isActiveTab === 'main'}
-            onClick={() => handleTabClick('main')}
-          >
-            Начинки
-          </Tab>
-          <Tab
             value="sauce"
             active={isActiveTab === 'sauce'}
             onClick={() => handleTabClick('sauce')}
           >
             Соусы
+          </Tab>
+          <Tab
+            value="main"
+            active={isActiveTab === 'main'}
+            onClick={() => handleTabClick('main')}
+          >
+            Начинки
           </Tab>
         </ul>
       </nav>
@@ -60,11 +60,11 @@ export const BurgerIngredients = ({
         <div id="bun">
           <IngredientsCategory ingredientsItems={groups.bun} />
         </div>
-        <div id="main">
-          <IngredientsCategory ingredientsItems={groups.main} />
-        </div>
         <div id="sauce">
           <IngredientsCategory ingredientsItems={groups.sauce} />
+        </div>
+        <div id="main">
+          <IngredientsCategory ingredientsItems={groups.main} />
         </div>
       </div>
     </section>
