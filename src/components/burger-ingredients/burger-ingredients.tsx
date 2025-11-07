@@ -1,6 +1,8 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
 import IngredientsCategory from './ingredients-category/ingredients-category';
 
 import type { TIngredient } from '@utils/types';
@@ -15,6 +17,8 @@ export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const [isActiveTab, setIsActiveTab] = useState('bun');
+  const [selectedIngredientData, setSelectedIngredientData] =
+    useState<TIngredient | null>(null);
 
   const groups = {
     bun: ingredients.filter((item) => item.type === 'bun'),
@@ -29,6 +33,15 @@ export const BurgerIngredients = ({
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  const handleSelectIngredient = (ingredient: TIngredient): void => {
+    setSelectedIngredientData(ingredient);
+  };
+
+  const handleCloseModal = (): void => {
+    setSelectedIngredientData(null);
+  };
+
   return (
     <section className={styles.burger_ingredients}>
       <nav>
@@ -58,15 +71,30 @@ export const BurgerIngredients = ({
       </nav>
       <div className={styles.ingredients_list}>
         <div id="bun">
-          <IngredientsCategory ingredientsItems={groups.bun} />
+          <IngredientsCategory
+            ingredientsItems={groups.bun}
+            onClick={handleSelectIngredient}
+          />
         </div>
         <div id="sauce">
-          <IngredientsCategory ingredientsItems={groups.sauce} />
+          <IngredientsCategory
+            ingredientsItems={groups.sauce}
+            onClick={handleSelectIngredient}
+          />
         </div>
         <div id="main">
-          <IngredientsCategory ingredientsItems={groups.main} />
+          <IngredientsCategory
+            ingredientsItems={groups.main}
+            onClick={handleSelectIngredient}
+          />
         </div>
       </div>
+
+      {selectedIngredientData && (
+        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
+          <IngredientDetails {...selectedIngredientData} />
+        </Modal>
+      )}
     </section>
   );
 };

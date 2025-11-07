@@ -6,15 +6,17 @@ type IngredientsCardProps = {
   image: string;
   name: string;
   price: number;
+  onClick: () => void;
 };
 
 const IngredientsCard = ({
   image,
   name,
   price,
+  onClick,
 }: IngredientsCardProps): React.JSX.Element => {
   return (
-    <div className={styles.ingredients_card}>
+    <div className={styles.ingredients_card} onClick={onClick}>
       <img className={styles.image} src={image} alt={name} />
       <div className={styles.price}>
         <p>{price}</p>

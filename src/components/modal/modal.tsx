@@ -1,28 +1,48 @@
 import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
+
+import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import styles from './modal.module.css';
 
-const modalElement = document.getElementById('modal-root');
+const modalElement = document.getElementById('modals-root');
 
-const Modal = (): React.JSX.Element => {
-  // потральчик тоже тут зафигарим, чтобы не париться с z-индексами и дисплей нан/блок
-  // ну тут будет короче лоигка закрытия/открытия модалки, которую я напишу завтра, тк сегодня я уже схожу с ума , вот такие вот дела. привет тому, кто будет это читать потом. если ты ученик - лучше не списывай, а учись, даже если сложно. за основу можешь использовать, там например подумать, как лучше сделать этот компонент и тп, но вот эти буковки пиши сам, а если ты ревьюер, то большой привет тебе и спасибо за проверку, йоу нигга.
+type TModalProps = {
+  children: React.ReactNode;
+  title?: string;
+  onClose: () => void;
+};
 
-  console.log(modalElement); // чтобы не ругался линтер на неиспользуемую переменную
-  return (
-    <div className={styles.modal}>
-      <div className={styles.header}>
-        <h2 className="text text_type_main-large">Modal Title</h2>
-        <button onClick={() => console.log('ляляля, закрываем модалочку')}>
-          <CloseIcon type="primary" />
-        </button>
+const Modal = ({ children, title, onClose }: TModalProps): React.JSX.Element => {
+  useEffect(() => {
+    const handleEscClose = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscClose);
+
+    return (): void => {
+      document.removeEventListener('keydown', handleEscClose);
+    };
+  });
+
+  return createPortal(
+    <>
+      <ModalOverlay onClose={onClose} />
+      <div className={styles.modal}>
+        <div className={title ? styles.header : styles.header_no_title}>
+          {title && <h2 className="text text_type_main-large">{title}</h2>}
+          <button className={styles.btn} onClick={onClose}>
+            <CloseIcon type="primary" />
+          </button>
+        </div>
+        {children}
       </div>
-      <p>
-        тут тело модалочки. принимаем данные из пропсов в виде детишек. в детишках
-        данные: либо динамически получаем, например для ингредиента, либо статичные,
-        например для оформления заказа
-      </p>
-    </div>
+    </>,
+    modalElement as HTMLDivElement
   );
 };
 

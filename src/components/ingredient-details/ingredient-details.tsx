@@ -1,14 +1,51 @@
+import type { TIngredient } from '@/utils/types';
+
 import styles from './ingredient-details.module.css';
 
-const IngredientDetails = (): React.JSX.Element => {
+const IngredientDetails = ({
+  name,
+  image,
+  calories,
+  proteins,
+  fat,
+  carbohydrates,
+}: TIngredient): React.JSX.Element => {
   return (
     <div className={styles.ingredient_details}>
-      <p>
-        Компонент OrderDetails содержит тестовые данные. Вы ещё не реализовали
-        функциональность создания заказа, поэтому используйте тексты из макета. В
-        дальнейшем номер заказа и другие данные будут приходить с сервера, но подумать о
-        месте для хранения тестовых данных нужно уже сейчас.
-      </p>
+      <div className={styles.main_info}>
+        <img className={styles.image} src={image} alt={name} />
+        <h2 className={`${styles.title} text text_type_main-medium`}>{name}</h2>
+      </div>
+      <ul className={styles.composition}>
+        <li className={styles.composition_item}>
+          <span className="text text_type_main-small text_color_inactive">
+            Калории, ккал
+          </span>
+          <span className="text text_type_digits-default text_color_inactive">
+            {calories}
+          </span>
+        </li>
+        <li className={styles.composition_item}>
+          <span className="text text_type_main-small text_color_inactive">Белки, г</span>
+          <span className="text text_type_digits-default text_color_inactive">
+            {proteins}
+          </span>
+        </li>
+        <li className={styles.composition_item}>
+          <span className="text text_type_main-small text_color_inactive">Жиры, г</span>
+          <span className="text text_type_digits-default text_color_inactive">
+            {fat}
+          </span>
+        </li>
+        <li className={styles.composition_item}>
+          <span className="text text_type_main-small text_color_inactive">
+            Углеводы, г
+          </span>
+          <span className="text text_type_digits-default text_color_inactive">
+            {carbohydrates}
+          </span>
+        </li>
+      </ul>
     </div>
   );
 };

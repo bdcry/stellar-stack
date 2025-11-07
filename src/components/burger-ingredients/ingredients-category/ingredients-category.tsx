@@ -6,6 +6,7 @@ import styles from './ingredients-category.module.css';
 
 type TIngredientsItemsProps = {
   ingredientsItems: TIngredient[];
+  onClick: (ingredient: TIngredient) => void;
 };
 
 type TCategoryTitles = Record<string, string>;
@@ -18,6 +19,7 @@ const CATEGORY_TITLES: TCategoryTitles = {
 
 const IngredientsCategory = ({
   ingredientsItems,
+  onClick,
 }: TIngredientsItemsProps): React.JSX.Element => {
   const categoryName = ingredientsItems[0].type;
 
@@ -29,7 +31,7 @@ const IngredientsCategory = ({
       <ul className={styles.ingredients_category}>
         {ingredientsItems.map((ingredient) => (
           <li key={ingredient._id}>
-            <IngredientsCard {...ingredient} />
+            <IngredientsCard {...ingredient} onClick={() => onClick(ingredient)} />
           </li>
         ))}
       </ul>
