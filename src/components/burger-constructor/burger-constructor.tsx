@@ -1,3 +1,7 @@
+import { useState } from 'react';
+
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 import ConstructorBun from './constructor-bun/constructor-bun';
 import ConstructorFillings from './constructor-fillings/constructor-fillings';
 import ConstructorOrderButton from './constructor-order-button/constructor-order-button';
@@ -14,11 +18,20 @@ type TBurgerConstructorProps = {
 export const BurgerConstructor = ({
   ingredients,
 }: TBurgerConstructorProps): React.JSX.Element => {
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const bun = ingredients.find((ingredient) => ingredient.type === 'bun');
   const fillings = ingredients.filter((ingredient) => ingredient.type !== 'bun');
   const total =
     fillings.reduce((acc, ingredient) => acc + ingredient.price, 0) +
     (bun ? bun.price * 2 : 0);
+
+  const handleOpenModal = (): void => {
+    setIsOrderModalOpen(true);
+  };
+
+  const handleCloseModal = (): void => {
+    setIsOrderModalOpen(false);
+  };
 
   return (
     <section className={styles.burger_constructor}>
@@ -32,8 +45,14 @@ export const BurgerConstructor = ({
 
       <div className={`${styles.price_bar} mt-10`}>
         <ConstructorPriceDisplay total={total} />
-        <ConstructorOrderButton />
+        <ConstructorOrderButton onOpen={handleOpenModal} />
       </div>
+
+      {isOrderModalOpen && (
+        <Modal onClose={handleCloseModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 };
