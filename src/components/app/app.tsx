@@ -20,7 +20,12 @@ export const App = (): React.JSX.Element => {
   useEffect(() => {
     const getIngredientsData = (): void => {
       fetch(`${API_URL}ingredients`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((res: TApiResponse) => setIngredientsData(res.data))
         .catch((err) => console.error('Error fetching ingredients:', err));
     };
