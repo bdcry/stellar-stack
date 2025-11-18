@@ -1,0 +1,35 @@
+.order_details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.order_number {
+  margin-bottom: 32px;
+  text-shadow:
+    0 4px 32px rgb(51 51 255 / 50%),
+    0 0 8px rgb(51 51 255 / 25%),
+    0 0 16px rgb(51 51 255 / 25%);
+}
+
+.order_id {
+  margin-bottom: 60px;
+}
+
+.check_icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 60px;
+  background: linear-gradient(63.18deg, #801ab3, #4c4cff);
+  border-radius: 50%;
+}
+
+.check_mark_icon {
+  width: 56px;
+  height: 56px;
+}

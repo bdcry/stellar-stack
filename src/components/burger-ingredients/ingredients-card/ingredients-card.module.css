@@ -1,0 +1,16 @@
+.ingredients_card {
+  position: relative;
+  text-align: center;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0;
+}
+
+.image {
+  width: 100%;
+}
