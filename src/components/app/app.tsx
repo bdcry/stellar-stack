@@ -1,37 +1,25 @@
-import { API_URL } from '@/utils/api';
-import { useEffect, useState } from 'react';
+import { fetchIngredients } from '@/services/slices/ingredients-slice';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
+import type { AppDispatch, RootState } from '@/services/store';
 import type { TIngredient } from '@/utils/types';
 
 import styles from './app.module.css';
 
-type TApiResponse = {
-  success: boolean;
-  data: TIngredient[];
-};
-
 export const App = (): React.JSX.Element => {
-  const [ingredientsData, setIngredientsData] = useState<TIngredient[]>([]);
+  const ingredientsData = useSelector<RootState, TIngredient[]>(
+    ({ ingredients }) => ingredients.items
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const getIngredientsData = (): void => {
-      fetch(`${API_URL}ingredients`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((res: TApiResponse) => setIngredientsData(res.data))
-        .catch((err) => console.error('Error fetching ingredients:', err));
-    };
-
-    getIngredientsData();
-  }, []);
+    void dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
