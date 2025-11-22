@@ -3,6 +3,10 @@ import {
   setBun,
   type TConstructorState,
 } from '@/services/slices/constructor-slice';
+import {
+  clearCurrentIngredient,
+  setCurrentIngredient,
+} from '@/services/slices/currentIngredient-slice';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,12 +28,13 @@ export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const [isActiveTab, setIsActiveTab] = useState('bun');
-  const [selectedIngredientData, setSelectedIngredientData] =
-    useState<TIngredient | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const burgerConstructorData = useSelector<RootState, TConstructorState>(
     ({ burgerConstructor }) => burgerConstructor
+  );
+  const selectedIngredientData = useSelector<RootState, TIngredient | null>(
+    ({ currentIngredient }) => currentIngredient.current
   );
 
   const groups = {
@@ -54,7 +59,7 @@ export const BurgerIngredients = ({
   };
 
   const handleSelectIngredient = (ingredient: TIngredient): void => {
-    setSelectedIngredientData(ingredient);
+    dispatch(setCurrentIngredient(ingredient));
 
     if (ingredient.type === 'bun') {
       dispatch(setBun(ingredient));
@@ -64,7 +69,7 @@ export const BurgerIngredients = ({
   };
 
   const handleCloseModal = (): void => {
-    setSelectedIngredientData(null);
+    dispatch(clearCurrentIngredient());
   };
 
   return (
