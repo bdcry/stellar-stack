@@ -1,5 +1,5 @@
 import { postOrder, reset } from '@/services/slices/order-slice';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '../modal/modal';
@@ -26,9 +26,11 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const total =
-    fillings.reduce((acc, ingredient) => acc + ingredient.price, 0) +
-    (bun ? bun.price * 2 : 0);
+  const total = useMemo((): number => {
+    const fillingsTotal = fillings.reduce((acc, item) => acc + item.price, 0);
+    const bunTotal = bun ? bun.price * 2 : 0;
+    return fillingsTotal + bunTotal;
+  }, [fillings, bun]);
 
   const handleOpenModal = (): void => {
     if (!bun || fillings.length === 0) return;
