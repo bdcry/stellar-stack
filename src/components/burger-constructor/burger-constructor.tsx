@@ -1,5 +1,6 @@
+import { postOrder, reset } from '@/services/slices/order-slice';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -9,7 +10,7 @@ import ConstructorOrderButton from './constructor-order-button/constructor-order
 import ConstructorPriceDisplay from './constructor-price-display/constructor-price-display';
 
 import type { TFilling } from '@/services/slices/constructor-slice';
-import type { RootState } from '@/services/store';
+import type { AppDispatch, RootState } from '@/services/store';
 import type { TIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
@@ -23,16 +24,22 @@ export const BurgerConstructor = (): React.JSX.Element => {
     ({ burgerConstructor }) => burgerConstructor.items
   );
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const total =
     fillings.reduce((acc, ingredient) => acc + ingredient.price, 0) +
     (bun ? bun.price * 2 : 0);
 
   const handleOpenModal = (): void => {
+    if (!bun || fillings.length === 0) return;
+    const ids = [bun._id, ...fillings.map((item) => item._id), bun._id];
+    void dispatch(postOrder(ids));
     setIsOrderModalOpen(true);
   };
 
   const handleCloseModal = (): void => {
     setIsOrderModalOpen(false);
+    dispatch(reset());
   };
 
   return (
@@ -47,7 +54,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
       <div className={`${styles.price_bar} mt-10`}>
         <ConstructorPriceDisplay total={total} />
-        <ConstructorOrderButton onOpen={handleOpenModal} />
+        <ConstructorOrderButton
+          onOpen={handleOpenModal}
+          disabled={!bun || fillings.length === 0}
+        />
       </div>
 
       {isOrderModalOpen && (

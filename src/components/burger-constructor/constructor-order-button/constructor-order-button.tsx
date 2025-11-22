@@ -3,12 +3,19 @@ import React from 'react';
 
 type TConstructorOrderButtonProps = {
   onOpen: () => void;
+  disabled: boolean;
 };
 
 const ConstructorOrderButton = React.memo(
-  ({ onOpen }: TConstructorOrderButtonProps): React.JSX.Element => {
+  ({ onOpen, disabled }: TConstructorOrderButtonProps): React.JSX.Element => {
     return (
-      <Button htmlType="button" type="primary" size="large" onClick={onOpen}>
+      <Button
+        htmlType="button"
+        type="primary"
+        size="large"
+        onClick={onOpen}
+        disabled={disabled}
+      >
         Оформить заказ
       </Button>
     );

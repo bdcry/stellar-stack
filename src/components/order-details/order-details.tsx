@@ -1,11 +1,20 @@
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
+
+import type { RootState } from '@/services/store';
 
 import styles from './order-details.module.css';
 
 const OrderDetails = (): React.JSX.Element => {
+  const orderNumber = useSelector<RootState, number | null>(
+    ({ orderInfo }) => orderInfo.orderNumber
+  );
+
   return (
     <div className={styles.order_details}>
-      <h2 className={`${styles.order_number} text text_type_digits-large`}>034536</h2>
+      <h2 className={`${styles.order_number} text text_type_digits-large`}>
+        {orderNumber}
+      </h2>
       <p className={`${styles.order_id} text text_type_main-medium`}>
         идентификатор заказа
       </p>
