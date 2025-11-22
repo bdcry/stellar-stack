@@ -10,29 +10,72 @@ import { useConstructorLogic } from './hooks/useConstructorLogic';
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
-  const { bun, fillings, total, isOrderModalOpen, handleOpenModal, handleCloseModal } =
-    useConstructorLogic();
+  const {
+    bun,
+    fillings,
+    total,
+    isOrderModalOpen,
+    handleOpenModal,
+    handleCloseModal,
+    dropRefTopBun,
+    isHoverBunTop,
+    dropRefBottomBun,
+    isHoverBunBottom,
+    dropRefFillings,
+    isHoverFilling,
+  } = useConstructorLogic();
 
   return (
     <section className={styles.burger_constructor}>
       <div className={styles.constructor_list}>
         {!bun ? (
-          <ConstructorPlaceholder text="Выберите булки" position="top" />
+          <div
+            ref={dropRefTopBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorPlaceholder text="Выберите булки" position="top" />
+          </div>
         ) : (
-          <ConstructorBun position="top" bun={bun} />
+          <div
+            ref={dropRefTopBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorBun position="top" bun={bun} />
+          </div>
         )}
-        <div className={styles.scroll_area}>
+        <div
+          className={styles.scroll_area}
+          ref={dropRefFillings as unknown as React.Ref<HTMLDivElement>}
+          style={{ border: isHoverFilling ? '1px solid #4c4cff' : 'none' }}
+        >
           {fillings.length === 0 ? (
             <ConstructorPlaceholder text="Выберите начинку" />
           ) : (
             <ConstructorFillings fillings={fillings} />
           )}
         </div>
-        {bun && <ConstructorBun position="bottom" bun={bun} />}
         {!bun ? (
-          <ConstructorPlaceholder text="Выберите булки" position="bottom" />
+          <div
+            ref={dropRefBottomBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorPlaceholder text="Выберите булки" position="bottom" />
+          </div>
         ) : (
-          <ConstructorBun position="bottom" bun={bun} />
+          <div
+            ref={dropRefBottomBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorBun position="bottom" bun={bun} />
+          </div>
         )}
       </div>
 
