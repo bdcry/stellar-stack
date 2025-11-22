@@ -1,4 +1,4 @@
-import { API_URL } from '@/utils/api';
+import { postOrderToApi } from '@/utils/api';
 import { createAsyncThunk, createSlice, type SerializedError } from '@reduxjs/toolkit';
 
 type TOrderState = {
@@ -13,31 +13,11 @@ const initialState: TOrderState = {
   error: null,
 };
 
-type TApiResponse = {
-  name: string;
-  order: {
-    number: number;
-  };
-  success: boolean;
-};
-
 export const postOrder = createAsyncThunk(
   'order/postOrder',
   async (ingredientsIds: string[]): Promise<number> => {
-    const response = await fetch(`${API_URL}orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ingredients: ingredientsIds }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const orderData = (await response.json()) as TApiResponse;
-    return orderData.order.number;
+    const data = await postOrderToApi(ingredientsIds);
+    return data;
   }
 );
 

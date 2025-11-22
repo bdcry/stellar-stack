@@ -1,4 +1,4 @@
-import { API_URL } from '@/utils/api';
+import { fetchIngredientsFromApi } from '@/utils/api';
 import { createAsyncThunk, createSlice, type SerializedError } from '@reduxjs/toolkit';
 
 import type { TIngredient } from '@/utils/types';
@@ -8,12 +8,6 @@ type TState = {
   status: 'idle' | 'loading' | 'failed';
   error: SerializedError | null;
 };
-
-type TApiResponse = {
-  success: boolean;
-  data: TIngredient[];
-};
-
 const initialState: TState = {
   items: [],
   status: 'idle',
@@ -23,14 +17,8 @@ const initialState: TState = {
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
   async (): Promise<TIngredient[]> => {
-    const response = await fetch(`${API_URL}ingredients`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const ingredientsData = (await response.json()) as TApiResponse;
-    return ingredientsData.data;
+    const data = await fetchIngredientsFromApi();
+    return data;
   }
 );
 
