@@ -8,7 +8,7 @@ import {
   setCurrentIngredient,
 } from '@/services/slices/currentIngredient-slice';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -28,6 +28,7 @@ export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const [isActiveTab, setIsActiveTab] = useState('bun');
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const burgerConstructorData = useSelector<RootState, TConstructorState>(
@@ -57,6 +58,47 @@ export const BurgerIngredients = ({
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  const handleScroll = (): void => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+
+    const bunSection = document.getElementById('bun');
+    const sauceSection = document.getElementById('sauce');
+    const mainSection = document.getElementById('main');
+
+    if (!bunSection || !sauceSection || !mainSection) return;
+
+    const bunRect = bunSection.getBoundingClientRect();
+    const sauceRect = sauceSection.getBoundingClientRect();
+    const mainRect = mainSection.getBoundingClientRect();
+
+    const bunDistance = Math.abs(bunRect.top - containerRect.top);
+    const sauceDistance = Math.abs(sauceRect.top - containerRect.top);
+    const mainDistance = Math.abs(mainRect.top - containerRect.top);
+
+    const activeTab =
+      bunDistance < sauceDistance && bunDistance < mainDistance
+        ? 'bun'
+        : sauceDistance < mainDistance
+          ? 'sauce'
+          : 'main';
+
+    setIsActiveTab(activeTab);
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.addEventListener('scroll', handleScroll);
+
+    return (): void => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleSelectIngredient = (ingredient: TIngredient): void => {
     dispatch(setCurrentIngredient(ingredient));
@@ -99,7 +141,7 @@ export const BurgerIngredients = ({
           </Tab>
         </ul>
       </nav>
-      <div className={styles.ingredients_list}>
+      <div className={styles.ingredients_list} ref={containerRef}>
         <div id="bun">
           <IngredientsCategory
             ingredientsItems={groups.bun}
