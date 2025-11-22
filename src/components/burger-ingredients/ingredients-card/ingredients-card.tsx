@@ -7,6 +7,7 @@ type IngredientsCardProps = {
   name: string;
   price: number;
   onClick: () => void;
+  count?: number;
 };
 
 const IngredientsCard = ({
@@ -14,6 +15,7 @@ const IngredientsCard = ({
   name,
   price,
   onClick,
+  count = 0,
 }: IngredientsCardProps): React.JSX.Element => {
   return (
     <div className={styles.ingredients_card} onClick={onClick}>
@@ -23,7 +25,7 @@ const IngredientsCard = ({
         <CurrencyIcon type="primary" />
       </div>
       <h3 className="text text_type_main-small">{name}</h3>
-      <Counter count={1} />
+      <Counter count={count} />
     </div>
   );
 };

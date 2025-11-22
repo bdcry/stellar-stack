@@ -31,7 +31,7 @@ export const App = (): React.JSX.Element => {
         {ingredientsData.length > 0 && (
           <>
             <BurgerIngredients ingredients={ingredientsData} />
-            <BurgerConstructor ingredients={ingredientsData} />
+            <BurgerConstructor />
           </>
         )}
       </main>
