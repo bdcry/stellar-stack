@@ -1,15 +1,11 @@
 import {
-  addFilling,
-  setBun,
-  type TConstructorState,
-} from '@/services/slices/constructor-slice';
-import {
   clearCurrentIngredient,
   setCurrentIngredient,
 } from '@/services/slices/currentIngredient-slice';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import type { TConstructorState } from '@/services/slices/constructor-slice';
 import type { AppDispatch, RootState } from '@/services/store';
 import type { TIngredient } from '@utils/types';
 
@@ -105,12 +101,6 @@ export const useIngredientsLogic = (
 
   const handleSelectIngredient = (ingredient: TIngredient): void => {
     dispatch(setCurrentIngredient(ingredient));
-
-    if (ingredient.type === 'bun') {
-      dispatch(setBun(ingredient));
-    } else {
-      dispatch(addFilling(ingredient));
-    }
   };
 
   const handleCloseModal = (): void => {

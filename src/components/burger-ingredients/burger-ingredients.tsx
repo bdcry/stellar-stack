@@ -11,15 +11,13 @@ import type { TIngredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
-
-export const BurgerIngredients = ({
-  ingredients,
-}: TBurgerIngredientsProps): React.JSX.Element => {
+export const BurgerIngredients = (): React.JSX.Element => {
   const selectedIngredientData = useSelector<RootState, TIngredient | null>(
     ({ currentIngredient }) => currentIngredient.current
+  );
+
+  const ingredients = useSelector<RootState, TIngredient[]>(
+    ({ ingredients }) => ingredients.items
   );
 
   const {
