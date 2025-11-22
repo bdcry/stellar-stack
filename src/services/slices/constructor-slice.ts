@@ -25,8 +25,11 @@ const constructorSlice = createSlice({
     addFilling(state, action: PayloadAction<TIngredient>) {
       state.items.push({ ...action.payload, uuid: uuidv4() });
     },
+    removeFilling(state, action: PayloadAction<string>) {
+      state.items = state.items.filter((item) => item.uuid !== action.payload);
+    },
   },
 });
 
-export const { setBun, addFilling } = constructorSlice.actions;
+export const { setBun, addFilling, removeFilling } = constructorSlice.actions;
 export default constructorSlice.reducer;
