@@ -1,9 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { TIngredient } from '@/utils/types';
-
-export type TFilling = TIngredient & { uuid: string };
+import type { TFilling, TIngredient } from '@/utils/types';
 
 export type TConstructorState = {
   bun: TIngredient | null;

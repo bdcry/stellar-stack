@@ -25,3 +25,5 @@ export type TApiResponsePostOrder = {
   };
   success: boolean;
 };
+
+export type TFilling = TIngredient & { uuid: string };

@@ -1,11 +1,11 @@
 import FillingItem from './filling-item/filling-item';
 
-import type { TIngredient } from '@/utils/types';
+import type { TFilling } from '@/utils/types';
 
 import styles from './constructor-fillings.module.css';
 
 type TConstructorFillingsProps = {
-  fillings: TIngredient[];
+  fillings: TFilling[];
 };
 
 const ConstructorFillings = ({

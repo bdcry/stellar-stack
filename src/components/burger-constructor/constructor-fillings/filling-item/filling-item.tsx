@@ -5,9 +5,9 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 
-import type { TIngredient } from '@/utils/types';
+import type { TFilling } from '@/utils/types';
 
-type TFillingItemProps = { filling: TIngredient & { uuid: string } };
+type TFillingItemProps = { filling: TFilling };
 
 import styles from './filling-item.module.css';
 
