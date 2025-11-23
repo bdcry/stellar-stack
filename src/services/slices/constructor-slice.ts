@@ -26,8 +26,14 @@ const constructorSlice = createSlice({
     removeFilling(state, action: PayloadAction<string>) {
       state.items = state.items.filter((item) => item.uuid !== action.payload);
     },
+    moveFilling(state, action: PayloadAction<{ fromIndex: number; toIndex: number }>) {
+      const { fromIndex, toIndex } = action.payload;
+      const [item] = state.items.splice(fromIndex, 1);
+      state.items.splice(toIndex, 0, item);
+    },
   },
 });
 
-export const { setBun, addFilling, removeFilling } = constructorSlice.actions;
+export const { setBun, addFilling, removeFilling, moveFilling } =
+  constructorSlice.actions;
 export default constructorSlice.reducer;

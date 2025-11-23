@@ -13,8 +13,8 @@ const ConstructorFillings = ({
 }: TConstructorFillingsProps): React.JSX.Element => {
   return (
     <ul className={styles.constructor_fillings}>
-      {fillings.map((filling) => (
-        <FillingItem key={filling._id} filling={filling} />
+      {fillings.map((filling, index) => (
+        <FillingItem key={filling.uuid} filling={filling} index={index} />
       ))}
     </ul>
   );
