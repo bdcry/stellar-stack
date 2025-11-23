@@ -1,23 +1,18 @@
 import { fetchIngredients } from '@/services/slices/ingredients-slice';
+import { useAppDispatch, useAppSelector } from '@/services/store';
 import { useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type { AppDispatch, RootState } from '@/services/store';
-import type { TIngredient } from '@/utils/types';
-
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
-  const ingredientsData = useSelector<RootState, TIngredient[]>(
-    ({ ingredients }) => ingredients.items
-  );
-  const dispatch = useDispatch<AppDispatch>();
+  const ingredientsData = useAppSelector(({ ingredients }) => ingredients.items);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     void dispatch(fetchIngredients());

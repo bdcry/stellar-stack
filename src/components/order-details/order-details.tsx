@@ -1,14 +1,10 @@
+import { useAppSelector } from '@/services/store';
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
-
-import type { RootState } from '@/services/store';
 
 import styles from './order-details.module.css';
 
 const OrderDetails = (): React.JSX.Element => {
-  const orderNumber = useSelector<RootState, number | null>(
-    ({ orderInfo }) => orderInfo.orderNumber
-  );
+  const orderNumber = useAppSelector(({ orderInfo }) => orderInfo.orderNumber);
 
   return (
     <div className={styles.order_details}>

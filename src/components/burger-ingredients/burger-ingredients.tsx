@@ -1,24 +1,19 @@
+import { useAppSelector } from '@/services/store';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
 
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { useIngredientsLogic } from './hooks/useIngredientsLogic';
 import IngredientsCategory from './ingredients-category/ingredients-category';
 
-import type { RootState } from '@/services/store';
-import type { TIngredient } from '@utils/types';
-
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
-  const selectedIngredientData = useSelector<RootState, TIngredient | null>(
+  const selectedIngredientData = useAppSelector(
     ({ currentIngredient }) => currentIngredient.current
   );
 
-  const ingredients = useSelector<RootState, TIngredient[]>(
-    ({ ingredients }) => ingredients.items
-  );
+  const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
 
   const {
     containerRef,

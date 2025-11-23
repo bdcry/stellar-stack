@@ -1,10 +1,10 @@
 import { moveFilling, removeFilling } from '@/services/slices/constructor-slice';
+import { useAppDispatch } from '@/services/store';
 import {
   ConstructorElement,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
 import type { TFilling } from '@/utils/types';
 
@@ -13,7 +13,7 @@ type TFillingItemProps = { filling: TFilling; index: number };
 import styles from './filling-item.module.css';
 
 const FillingItem = ({ filling, index }: TFillingItemProps): React.JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'filling',

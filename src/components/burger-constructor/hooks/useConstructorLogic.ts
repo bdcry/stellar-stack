@@ -1,10 +1,9 @@
 import { addFilling, setBun } from '@/services/slices/constructor-slice';
 import { postOrder, reset } from '@/services/slices/order-slice';
+import { useAppDispatch, useAppSelector } from '@/services/store';
 import { useMemo, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/services/store';
 import type { TFilling, TIngredient } from '@utils/types';
 
 type TUseConstructorLogicReturn = {
@@ -24,17 +23,11 @@ type TUseConstructorLogicReturn = {
 
 export const useConstructorLogic = (): TUseConstructorLogicReturn => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const bun = useSelector<RootState, TIngredient | null>(
-    ({ burgerConstructor }) => burgerConstructor.bun
-  );
-  const fillings = useSelector<RootState, TFilling[]>(
-    ({ burgerConstructor }) => burgerConstructor.items
-  );
-  const allIngredients = useSelector<RootState, TIngredient[]>(
-    ({ ingredients }) => ingredients.items
-  );
+  const bun = useAppSelector(({ burgerConstructor }) => burgerConstructor.bun);
+  const fillings = useAppSelector(({ burgerConstructor }) => burgerConstructor.items);
+  const allIngredients = useAppSelector(({ ingredients }) => ingredients.items);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const total = useMemo((): number => {
     const fillingsTotal = fillings.reduce((acc, item) => acc + item.price, 0);
