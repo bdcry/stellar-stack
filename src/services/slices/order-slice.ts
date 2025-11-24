@@ -13,13 +13,7 @@ const initialState: TOrderState = {
   error: null,
 };
 
-export const postOrder = createAsyncThunk(
-  'order/postOrder',
-  async (ingredientsIds: string[]): Promise<number> => {
-    const data = await postOrderToApi(ingredientsIds);
-    return data;
-  }
-);
+export const postOrder = createAsyncThunk('order/postOrder', postOrderToApi);
 
 const orderSlice = createSlice({
   name: 'order',
