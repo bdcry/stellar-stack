@@ -36,9 +36,13 @@ const constructorSlice = createSlice({
       const [item] = state.items.splice(fromIndex, 1);
       state.items.splice(toIndex, 0, item);
     },
+    clearConstructor(state) {
+      state.bun = null;
+      state.items = [];
+    },
   },
 });
 
-export const { setBun, addFilling, removeFilling, moveFilling } =
+export const { setBun, addFilling, removeFilling, moveFilling, clearConstructor } =
   constructorSlice.actions;
 export default constructorSlice.reducer;

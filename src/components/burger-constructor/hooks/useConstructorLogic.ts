@@ -1,4 +1,8 @@
-import { addFilling, setBun } from '@/services/slices/constructor-slice';
+import {
+  addFilling,
+  clearConstructor,
+  setBun,
+} from '@/services/slices/constructor-slice';
 import { postOrder, reset } from '@/services/slices/order-slice';
 import { useAppDispatch, useAppSelector } from '@/services/store';
 import { useMemo, useState } from 'react';
@@ -45,6 +49,7 @@ export const useConstructorLogic = (): TUseConstructorLogicReturn => {
   const handleCloseModal = (): void => {
     setIsOrderModalOpen(false);
     dispatch(reset());
+    dispatch(clearConstructor());
   };
 
   const [{ isHoverBunTop }, dropRefTopBun] = useDrop({
