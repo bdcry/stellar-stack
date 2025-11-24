@@ -20,8 +20,13 @@ const constructorSlice = createSlice({
     setBun(state, action: PayloadAction<TIngredient>) {
       state.bun = action.payload;
     },
-    addFilling(state, action: PayloadAction<TIngredient>) {
-      state.items.push({ ...action.payload, uuid: uuidv4() });
+    addFilling: {
+      reducer: (state, action: PayloadAction<TFilling>) => {
+        state.items.push(action.payload);
+      },
+      prepare: (ingredient: TIngredient) => {
+        return { payload: { ...ingredient, uuid: uuidv4() } };
+      },
     },
     removeFilling(state, action: PayloadAction<string>) {
       state.items = state.items.filter((item) => item.uuid !== action.payload);
