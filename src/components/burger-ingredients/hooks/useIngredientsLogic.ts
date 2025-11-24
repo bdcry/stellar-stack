@@ -11,6 +11,9 @@ import type { TIngredient } from '@utils/types';
 
 type TUseIngredientsLogicReturn = {
   containerRef: React.RefObject<HTMLDivElement | null>;
+  bunSectionRef: React.RefObject<HTMLDivElement | null>;
+  sauceSectionRef: React.RefObject<HTMLDivElement | null>;
+  mainSectionRef: React.RefObject<HTMLDivElement | null>;
   isActiveTab: string;
   groups: {
     bun: TIngredient[];
@@ -28,6 +31,10 @@ export const useIngredientsLogic = (
 ): TUseIngredientsLogicReturn => {
   const [isActiveTab, setIsActiveTab] = useState('bun');
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const bunSectionRef = useRef<HTMLDivElement>(null);
+  const sauceSectionRef = useRef<HTMLDivElement>(null);
+  const mainSectionRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const burgerConstructorData = useSelector<RootState, TConstructorState>(
@@ -64,15 +71,11 @@ export const useIngredientsLogic = (
 
     const containerRect = container.getBoundingClientRect();
 
-    const bunSection = document.getElementById('bun');
-    const sauceSection = document.getElementById('sauce');
-    const mainSection = document.getElementById('main');
+    const bunRect = bunSectionRef.current?.getBoundingClientRect();
+    const sauceRect = sauceSectionRef.current?.getBoundingClientRect();
+    const mainRect = mainSectionRef.current?.getBoundingClientRect();
 
-    if (!bunSection || !sauceSection || !mainSection) return;
-
-    const bunRect = bunSection.getBoundingClientRect();
-    const sauceRect = sauceSection.getBoundingClientRect();
-    const mainRect = mainSection.getBoundingClientRect();
+    if (!bunRect || !sauceRect || !mainRect) return;
 
     const bunDistance = Math.abs(bunRect.top - containerRect.top);
     const sauceDistance = Math.abs(sauceRect.top - containerRect.top);
@@ -109,6 +112,9 @@ export const useIngredientsLogic = (
 
   return {
     containerRef,
+    bunSectionRef,
+    sauceSectionRef,
+    mainSectionRef,
     isActiveTab,
     groups,
     getCount,

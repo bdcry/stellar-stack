@@ -17,6 +17,9 @@ export const BurgerIngredients = (): React.JSX.Element => {
 
   const {
     containerRef,
+    bunSectionRef,
+    sauceSectionRef,
+    mainSectionRef,
     isActiveTab,
     groups,
     getCount,
@@ -53,21 +56,21 @@ export const BurgerIngredients = (): React.JSX.Element => {
         </ul>
       </nav>
       <div className={styles.ingredients_list} ref={containerRef}>
-        <div id="bun">
+        <div id="bun" ref={bunSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.bun}
             onClick={handleSelectIngredient}
             getCount={getCount}
           />
         </div>
-        <div id="sauce">
+        <div id="sauce" ref={sauceSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.sauce}
             onClick={handleSelectIngredient}
             getCount={getCount}
           />
         </div>
-        <div id="main">
+        <div id="main" ref={mainSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.main}
             onClick={handleSelectIngredient}
