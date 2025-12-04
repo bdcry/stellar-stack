@@ -1,0 +1,48 @@
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
+
+import type { TFilling, TIngredient } from '@/utils/types';
+
+export type TConstructorState = {
+  bun: TIngredient | null;
+  items: TFilling[];
+};
+
+const initialState: TConstructorState = {
+  bun: null,
+  items: [],
+};
+
+const constructorSlice = createSlice({
+  name: 'burger-constructor',
+  initialState,
+  reducers: {
+    setBun(state, action: PayloadAction<TIngredient>) {
+      state.bun = action.payload;
+    },
+    addFilling: {
+      reducer: (state, action: PayloadAction<TFilling>) => {
+        state.items.push(action.payload);
+      },
+      prepare: (ingredient: TIngredient) => {
+        return { payload: { ...ingredient, uuid: uuidv4() } };
+      },
+    },
+    removeFilling(state, action: PayloadAction<string>) {
+      state.items = state.items.filter((item) => item.uuid !== action.payload);
+    },
+    moveFilling(state, action: PayloadAction<{ fromIndex: number; toIndex: number }>) {
+      const { fromIndex, toIndex } = action.payload;
+      const [item] = state.items.splice(fromIndex, 1);
+      state.items.splice(toIndex, 0, item);
+    },
+    clearConstructor(state) {
+      state.bun = null;
+      state.items = [];
+    },
+  },
+});
+
+export const { setBun, addFilling, removeFilling, moveFilling, clearConstructor } =
+  constructorSlice.actions;
+export default constructorSlice.reducer;

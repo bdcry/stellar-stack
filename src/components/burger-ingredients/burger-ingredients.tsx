@@ -1,46 +1,32 @@
+import { useAppSelector } from '@/services/store';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
+import { useIngredientsLogic } from './hooks/useIngredientsLogic';
 import IngredientsCategory from './ingredients-category/ingredients-category';
-
-import type { TIngredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
+export const BurgerIngredients = (): React.JSX.Element => {
+  const selectedIngredientData = useAppSelector(
+    ({ currentIngredient }) => currentIngredient.current
+  );
 
-export const BurgerIngredients = ({
-  ingredients,
-}: TBurgerIngredientsProps): React.JSX.Element => {
-  const [isActiveTab, setIsActiveTab] = useState('bun');
-  const [selectedIngredientData, setSelectedIngredientData] =
-    useState<TIngredient | null>(null);
+  const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
 
-  const groups = {
-    bun: ingredients.filter((item) => item.type === 'bun'),
-    main: ingredients.filter((item) => item.type === 'main'),
-    sauce: ingredients.filter((item) => item.type === 'sauce'),
-  };
-
-  const handleTabClick = (tabName: string): void => {
-    setIsActiveTab(tabName);
-    const element = document.getElementById(tabName);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const handleSelectIngredient = (ingredient: TIngredient): void => {
-    setSelectedIngredientData(ingredient);
-  };
-
-  const handleCloseModal = (): void => {
-    setSelectedIngredientData(null);
-  };
+  const {
+    containerRef,
+    bunSectionRef,
+    sauceSectionRef,
+    mainSectionRef,
+    isActiveTab,
+    groups,
+    getCount,
+    handleTabClick,
+    handleSelectIngredient,
+    handleCloseModal,
+  } = useIngredientsLogic(ingredients);
 
   return (
     <section className={styles.burger_ingredients}>
@@ -69,23 +55,26 @@ export const BurgerIngredients = ({
           </Tab>
         </ul>
       </nav>
-      <div className={styles.ingredients_list}>
-        <div id="bun">
+      <div className={styles.ingredients_list} ref={containerRef}>
+        <div id="bun" ref={bunSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.bun}
             onClick={handleSelectIngredient}
+            getCount={getCount}
           />
         </div>
-        <div id="sauce">
+        <div id="sauce" ref={sauceSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.sauce}
             onClick={handleSelectIngredient}
+            getCount={getCount}
           />
         </div>
-        <div id="main">
+        <div id="main" ref={mainSectionRef}>
           <IngredientsCategory
             ingredientsItems={groups.main}
             onClick={handleSelectIngredient}
+            getCount={getCount}
           />
         </div>
       </div>

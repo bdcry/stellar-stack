@@ -1,0 +1,26 @@
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+  padding: 0 24px;
+  color: rgb(255 255 255 / 50%);
+  background-color: rgb(255 255 255 / 20%);
+  border-radius: 40px;
+}
+
+.top {
+  border-radius: 40px 40px 0 0;
+}
+
+.bottom {
+  border-radius: 0 0 40px 40px;
+}
+
+.middle {
+  border-radius: 40px;
+}
+
+.placeholder p {
+  margin: 0;
+}

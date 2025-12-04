@@ -1,51 +1,90 @@
-import { useState } from 'react';
-
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import ConstructorBun from './constructor-bun/constructor-bun';
 import ConstructorFillings from './constructor-fillings/constructor-fillings';
 import ConstructorOrderButton from './constructor-order-button/constructor-order-button';
+import ConstructorPlaceholder from './constructor-placeholder/constructor-placeholder';
 import ConstructorPriceDisplay from './constructor-price-display/constructor-price-display';
-
-import type { TIngredient } from '@utils/types';
+import { useConstructorLogic } from './hooks/useConstructorLogic';
 
 import styles from './burger-constructor.module.css';
 
-type TBurgerConstructorProps = {
-  ingredients: TIngredient[];
-};
-
-export const BurgerConstructor = ({
-  ingredients,
-}: TBurgerConstructorProps): React.JSX.Element => {
-  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const bun = ingredients.find((ingredient) => ingredient.type === 'bun');
-  const fillings = ingredients.filter((ingredient) => ingredient.type !== 'bun');
-  const total =
-    fillings.reduce((acc, ingredient) => acc + ingredient.price, 0) +
-    (bun ? bun.price * 2 : 0);
-
-  const handleOpenModal = (): void => {
-    setIsOrderModalOpen(true);
-  };
-
-  const handleCloseModal = (): void => {
-    setIsOrderModalOpen(false);
-  };
+export const BurgerConstructor = (): React.JSX.Element => {
+  const {
+    bun,
+    fillings,
+    total,
+    isOrderModalOpen,
+    handleOpenModal,
+    handleCloseModal,
+    dropRefTopBun,
+    isHoverBunTop,
+    dropRefBottomBun,
+    isHoverBunBottom,
+    dropRefFillings,
+    isHoverFilling,
+  } = useConstructorLogic();
 
   return (
     <section className={styles.burger_constructor}>
       <div className={styles.constructor_list}>
-        {bun && <ConstructorBun position="top" bun={bun} />}
-        <div className={styles.scroll_area}>
-          <ConstructorFillings fillings={fillings} />
+        {!bun ? (
+          <div
+            ref={dropRefTopBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorPlaceholder text="Выберите булки" position="top" />
+          </div>
+        ) : (
+          <div
+            ref={dropRefTopBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorBun position="top" bun={bun} />
+          </div>
+        )}
+        <div
+          className={styles.scroll_area}
+          ref={dropRefFillings as unknown as React.Ref<HTMLDivElement>}
+          style={{ border: isHoverFilling ? '1px solid #4c4cff' : 'none' }}
+        >
+          {fillings.length === 0 ? (
+            <ConstructorPlaceholder text="Выберите начинку" />
+          ) : (
+            <ConstructorFillings fillings={fillings} />
+          )}
         </div>
-        {bun && <ConstructorBun position="bottom" bun={bun} />}
+        {!bun ? (
+          <div
+            ref={dropRefBottomBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorPlaceholder text="Выберите булки" position="bottom" />
+          </div>
+        ) : (
+          <div
+            ref={dropRefBottomBun as unknown as React.Ref<HTMLDivElement>}
+            style={{
+              border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
+            }}
+          >
+            <ConstructorBun position="bottom" bun={bun} />
+          </div>
+        )}
       </div>
 
       <div className={`${styles.price_bar} mt-10`}>
         <ConstructorPriceDisplay total={total} />
-        <ConstructorOrderButton onOpen={handleOpenModal} />
+        <ConstructorOrderButton
+          onOpen={handleOpenModal}
+          disabled={!bun || fillings.length === 0}
+        />
       </div>
 
       {isOrderModalOpen && (

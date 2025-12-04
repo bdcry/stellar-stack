@@ -1,37 +1,22 @@
-import { API_URL } from '@/utils/api';
-import { useEffect, useState } from 'react';
+import { fetchIngredients } from '@/services/slices/ingredients-slice';
+import { useAppDispatch, useAppSelector } from '@/services/store';
+import { useEffect } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type { TIngredient } from '@/utils/types';
-
 import styles from './app.module.css';
 
-type TApiResponse = {
-  success: boolean;
-  data: TIngredient[];
-};
-
 export const App = (): React.JSX.Element => {
-  const [ingredientsData, setIngredientsData] = useState<TIngredient[]>([]);
+  const ingredientsData = useAppSelector(({ ingredients }) => ingredients.items);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getIngredientsData = (): void => {
-      fetch(`${API_URL}ingredients`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((res: TApiResponse) => setIngredientsData(res.data))
-        .catch((err) => console.error('Error fetching ingredients:', err));
-    };
-
-    getIngredientsData();
-  }, []);
+    void dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -41,10 +26,10 @@ export const App = (): React.JSX.Element => {
       </h1>
       <main className={`${styles.main} pl-5 pr-5`}>
         {ingredientsData.length > 0 && (
-          <>
-            <BurgerIngredients ingredients={ingredientsData} />
-            <BurgerConstructor ingredients={ingredientsData} />
-          </>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         )}
       </main>
     </div>

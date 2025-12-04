@@ -12,3 +12,18 @@ export type TIngredient = {
   image_mobile: string;
   __v: number;
 };
+
+export type TApiResponseFetchIngredients = {
+  success: boolean;
+  data: TIngredient[];
+};
+
+export type TApiResponsePostOrder = {
+  name: string;
+  order: {
+    number: number;
+  };
+  success: boolean;
+};
+
+export type TFilling = TIngredient & { uuid: string };

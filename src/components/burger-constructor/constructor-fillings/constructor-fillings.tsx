@@ -1,11 +1,11 @@
 import FillingItem from './filling-item/filling-item';
 
-import type { TIngredient } from '@/utils/types';
+import type { TFilling } from '@/utils/types';
 
 import styles from './constructor-fillings.module.css';
 
 type TConstructorFillingsProps = {
-  fillings: TIngredient[];
+  fillings: TFilling[];
 };
 
 const ConstructorFillings = ({
@@ -13,8 +13,8 @@ const ConstructorFillings = ({
 }: TConstructorFillingsProps): React.JSX.Element => {
   return (
     <ul className={styles.constructor_fillings}>
-      {fillings.map((filling) => (
-        <FillingItem key={filling._id} filling={filling} />
+      {fillings.map((filling, index) => (
+        <FillingItem key={filling.uuid} filling={filling} index={index} />
       ))}
     </ul>
   );
