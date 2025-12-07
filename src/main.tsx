@@ -8,7 +8,15 @@ import storeSetup from './services/store';
 
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root');
+
+if (!container) {
+  throw new Error('Root container missing in index.html');
+}
+
+const root = createRoot(container);
+
+root.render(
   <StrictMode>
     <Provider store={storeSetup}>
       <App />
