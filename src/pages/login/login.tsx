@@ -1,4 +1,5 @@
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 
 import type { JSX } from 'react';
 
@@ -12,7 +13,7 @@ export const Login = (): JSX.Element => {
         <form className={styles.form}>
           <Input
             errorText="Ошибка"
-            name="name"
+            name="email"
             onChange={() => console.log('hello world from e-mail')}
             placeholder="E-mail"
             size="default"
@@ -22,7 +23,7 @@ export const Login = (): JSX.Element => {
           <Input
             errorText="Ошибка"
             icon="ShowIcon"
-            name="name"
+            name="password"
             onChange={() => console.log('hello world from password')}
             placeholder="Пароль"
             size="default"
@@ -39,10 +40,11 @@ export const Login = (): JSX.Element => {
             Войти
           </Button>
         </form>
-        {/* добавить линки сюда позже, сейчас впадлу */}
         <p className="text text_type_main-default text_color_inactive mb-4">
           Вы — новый пользователь?{' '}
-          <span className="text_color_accent">Зарегистрироваться</span>
+          <Link to="/register" className={`${styles.link} text_color_accent`}>
+            Зарегистрироваться
+          </Link>
         </p>
         <p className="text text_type_main-default text_color_inactive">
           Забыли пароль? <span className="text_color_accent">Восстановить пароль</span>

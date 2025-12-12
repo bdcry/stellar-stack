@@ -26,3 +26,7 @@
   align-items: center;
   gap: 24px;
 }
+
+.link {
+  text-decoration: none;
+}
