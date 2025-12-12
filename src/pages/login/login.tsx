@@ -47,7 +47,10 @@ export const Login = (): JSX.Element => {
           </Link>
         </p>
         <p className="text text_type_main-default text_color_inactive">
-          Забыли пароль? <span className="text_color_accent">Восстановить пароль</span>
+          Забыли пароль?{' '}
+          <Link to="/forgot-password" className={`${styles.link} text_color_accent`}>
+            Восстановить пароль
+          </Link>
         </p>
       </div>
     </div>
