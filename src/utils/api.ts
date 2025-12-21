@@ -120,13 +120,15 @@ export const requestLogout = async (
   return data;
 };
 
-export const requestNewToken = async (token: string): Promise<TApiResponseToken> => {
+export const requestNewToken = async (
+  refreshToken: string
+): Promise<TApiResponseToken> => {
   const response = await request('auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ token }),
+    body: JSON.stringify({ token: refreshToken }),
   });
 
   const data = (await response.json()) as TApiResponseToken;

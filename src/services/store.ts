@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 
+import authReducer from './slices/auth-slice';
 import constructorReducer from './slices/constructor-slice';
 import currentIngredientReducer from './slices/currentIngredient-slice';
 import ingredientsReducer from './slices/ingredients-slice';
@@ -14,6 +15,7 @@ const storeSetup = configureStore({
     burgerConstructor: constructorReducer,
     currentIngredient: currentIngredientReducer,
     orderInfo: orderReducer,
+    auth: authReducer,
   },
 });
 
