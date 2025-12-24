@@ -1,11 +1,13 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from '@/services/store';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import type { JSX } from 'react';
 
-export const ProtectedRoute = ({ isAuth }: { isAuth: boolean }): JSX.Element => {
-  // пока что такая заглушка, но потом будут данные из стора браться
+export const ProtectedRoute = (): JSX.Element => {
   // если идёт запрос на бек для обработки пользователя, то показываем прелоадер
   // если пользователь не найден или не зарегистрирован, то редирект на логин
   // если маршрут оказывается не для авторизованного пользователя, а попадает на неё авторизованный, то мы должны редиректить авторизованного пользователя на предыдущий шаг из location.state или на главную страницу
-  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+
+  const isAuth = useAppSelector(({ auth }) => auth.isAuth);
+  return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };

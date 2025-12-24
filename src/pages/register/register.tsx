@@ -1,51 +1,62 @@
+import { register } from '@/services/slices/auth-slice';
+import { useAppDispatch, useAppSelector } from '@/services/store';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
+import { useState, type JSX } from 'react';
 import { Link } from 'react-router-dom';
-
-import type { JSX } from 'react';
 
 import styles from './register.module.css';
 
 export const Register = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(true);
+  const fieldError = useAppSelector(({ auth }) => auth.error);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    void dispatch(
+      register({ name: form.name, email: form.email, password: form.password })
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <Input
-            errorText="Ошибка"
             name="name"
-            onChange={() => console.log('hello world from e-mail')}
+            onChange={handleChange}
             placeholder="Имя"
             size="default"
             type="text"
-            value=""
+            value={form.name}
           />
           <Input
-            errorText="Ошибка"
+            error={!!fieldError}
+            errorText="Пользователь с таким email уже существует"
             name="email"
-            onChange={() => console.log('hello world from e-mail')}
+            onChange={handleChange}
             placeholder="E-mail"
             size="default"
             type="email"
-            value=""
+            value={form.email}
           />
           <Input
-            errorText="Ошибка"
-            icon="ShowIcon"
+            icon={showPassword ? 'ShowIcon' : 'HideIcon'}
+            onIconClick={() => setShowPassword(!showPassword)}
             name="password"
-            onChange={() => console.log('hello world from password')}
+            onChange={handleChange}
             placeholder="Пароль"
             size="default"
-            type="password"
-            value=""
+            type={showPassword ? 'password' : 'text'}
+            value={form.password}
           />
-          <Button
-            onClick={() => console.log('hello world from btn')}
-            type="primary"
-            size="medium"
-            htmlType="submit"
-            extraClass="mb-20"
-          >
+          <Button type="primary" size="medium" htmlType="submit" extraClass="mb-20">
             Зарегистрироваться
           </Button>
         </form>

@@ -8,6 +8,15 @@ import type {
   TIngredient,
 } from './types';
 
+// requestPasswordReset → resetPasswordRequest
+// confirmPasswordReset → resetPasswordConfirm
+// requestRegister → signUp
+// requestLogin → signIn
+// requestLogout → logout
+// requestNewToken → refreshAccessToken
+// fetchUserData → getUser
+// updateUserData → updateUser
+
 export const API_URL = 'https://norma.education-services.ru/api/';
 
 const checkResponse = (res: Response): Response => {
@@ -71,7 +80,7 @@ export const confirmPasswordReset = async (
   return data;
 };
 
-export const requestRegister = async (
+export const signUp = async (
   email: string,
   password: string,
   name: string
@@ -88,7 +97,7 @@ export const requestRegister = async (
   return data;
 };
 
-export const requestLogin = async (
+export const signIn = async (
   email: string,
   password: string
 ): Promise<TApiResponseAuth> => {
@@ -120,7 +129,7 @@ export const requestLogout = async (
   return data;
 };
 
-export const requestNewToken = async (
+export const refreshAccessToken = async (
   refreshToken: string
 ): Promise<TApiResponseToken> => {
   const response = await request('auth/token', {

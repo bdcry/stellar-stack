@@ -1,42 +1,66 @@
+import { login } from '@/services/slices/auth-slice';
+import { useAppDispatch, useAppSelector } from '@/services/store';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { useEffect, useState, type JSX } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import type { JSX } from 'react';
+import type { TLoginData } from '@/utils/types';
 
 import styles from './login.module.css';
 
 export const Login = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isAuth, error } = useAppSelector((state) => state.auth);
+  const [showPassword, setShowPassword] = useState(true);
+  const [form, setForm] = useState<TLoginData>({
+    email: '',
+    password: '',
+  });
+
+  useEffect(() => {
+    if (isAuth) {
+      void navigate('/', { replace: true });
+    }
+  }, [isAuth]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    void dispatch(login({ email: form.email, password: form.password }));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1 className="text text_type_main-medium mb-6">Войти</h1>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <Input
-            errorText="Ошибка"
+            error={!!error}
+            errorText="Неверный Email"
             name="email"
-            onChange={() => console.log('hello world from e-mail')}
+            onChange={handleChange}
             placeholder="E-mail"
             size="default"
             type="email"
-            value=""
+            value={form.email}
           />
           <Input
-            errorText="Ошибка"
-            icon="ShowIcon"
+            error={!!error}
+            errorText="Неверный пароль"
+            icon={showPassword ? 'ShowIcon' : 'HideIcon'}
             name="password"
-            onChange={() => console.log('hello world from password')}
+            onChange={handleChange}
+            onIconClick={() => setShowPassword(!showPassword)}
             placeholder="Пароль"
             size="default"
-            type="password"
-            value=""
+            type={showPassword ? 'password' : 'text'}
+            value={form.password}
           />
-          <Button
-            onClick={() => console.log('hello world from btn')}
-            type="primary"
-            size="medium"
-            htmlType="submit"
-            extraClass="mb-20"
-          >
+          <Button type="primary" size="medium" htmlType="submit" extraClass="mb-20">
             Войти
           </Button>
         </form>

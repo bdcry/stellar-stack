@@ -50,3 +50,10 @@ export type TApiResponseToken = {
 };
 
 export type TApiUserData = Omit<TApiResponseAuth, 'accessToken' | 'refreshToken'>;
+
+export type TLoginData = {
+  email: string;
+  password: string;
+};
+
+export type TRegisterData = TLoginData & { name: string };
