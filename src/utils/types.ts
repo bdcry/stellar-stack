@@ -57,3 +57,9 @@ export type TLoginData = {
 };
 
 export type TRegisterData = TLoginData & { name: string };
+
+export type TUpdateUserData = {
+  name: string;
+  email: string;
+  password: string;
+};

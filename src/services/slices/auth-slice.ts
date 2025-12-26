@@ -1,7 +1,13 @@
-import { refreshAccessToken, signIn, signUp } from '@/utils/api';
+import {
+  getUserData,
+  refreshAccessToken,
+  signIn,
+  signUp,
+  updateUserData,
+} from '@/utils/api';
 import { createAsyncThunk, createSlice, type SerializedError } from '@reduxjs/toolkit';
 
-import type { TRegisterData } from '@/utils/types';
+import type { TLoginData, TRegisterData, TUpdateUserData } from '@/utils/types';
 
 type TAuthState = {
   user: {
@@ -31,12 +37,14 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
   localStorage.setItem('accessToken', newAccessToken.accessToken);
   localStorage.setItem('refreshToken', newAccessToken.refreshToken);
 
-  return newAccessToken;
+  const userData = await getUserData(newAccessToken.accessToken);
+
+  return { ...newAccessToken, user: userData.user };
 });
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({ email, password }: { email: string; password: string }) => {
+  async ({ email, password }: TLoginData) => {
     const response = await signIn(email, password);
     localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('refreshToken', response.refreshToken);
@@ -54,6 +62,20 @@ export const register = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  'auth/updateUser',
+  async ({ name, email, password }: TUpdateUserData) => {
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+      return null;
+    }
+
+    const response = await updateUserData(token, name, email, password);
+    return response;
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -66,6 +88,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, { payload }) => {
+        if (payload) {
+          state.user = payload.user;
+        }
         state.status = 'idle';
         state.isAuth = payload !== null;
         state.error = null;
@@ -85,7 +110,6 @@ const authSlice = createSlice({
         state.status = 'idle';
         state.isAuth = payload.success;
         state.error = null;
-        console.log(payload);
         state.user = { email: payload.user.email, name: payload.user.name };
       })
       .addCase(login.rejected, (state, action) => {
@@ -107,11 +131,29 @@ const authSlice = createSlice({
           email: payload.user.email,
           name: payload.user.name,
         };
-        console.log(payload);
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
         state.isAuth = false;
+        state.error = action.error;
+      })
+      // Update User
+      .addCase(updateUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        if (payload) {
+          state.status = 'idle';
+          state.error = null;
+          state.user = {
+            email: payload.user.email,
+            name: payload.user.name,
+          };
+        }
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.error;
       });
   },

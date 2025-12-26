@@ -10,12 +10,7 @@ import type {
 
 // requestPasswordReset → resetPasswordRequest
 // confirmPasswordReset → resetPasswordConfirm
-// requestRegister → signUp
-// requestLogin → signIn
 // requestLogout → logout
-// requestNewToken → refreshAccessToken
-// fetchUserData → getUser
-// updateUserData → updateUser
 
 export const API_URL = 'https://norma.education-services.ru/api/';
 
@@ -144,12 +139,12 @@ export const refreshAccessToken = async (
   return data;
 };
 
-export const fetchUserData = async (token: string): Promise<TApiUserData> => {
+export const getUserData = async (token: string): Promise<TApiUserData> => {
   const response = await request('auth/user', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
 
@@ -167,7 +162,7 @@ export const updateUserData = async (
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     body: JSON.stringify({ name, email, password }),
   });
