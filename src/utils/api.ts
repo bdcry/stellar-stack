@@ -8,9 +8,6 @@ import type {
   TIngredient,
 } from './types';
 
-// requestPasswordReset → resetPasswordRequest
-// confirmPasswordReset → resetPasswordConfirm
-
 export const API_URL = 'https://norma.education-services.ru/api/';
 
 const checkResponse = (res: Response): Response => {

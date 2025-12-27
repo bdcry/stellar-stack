@@ -1,12 +1,8 @@
-import {
-  clearCurrentIngredient,
-  setCurrentIngredient,
-} from '@/services/slices/currentIngredient-slice';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import type { TConstructorState } from '@/services/slices/constructor-slice';
-import type { AppDispatch, RootState } from '@/services/store';
+import type { RootState } from '@/services/store';
 import type { TIngredient } from '@utils/types';
 
 type TUseIngredientsLogicReturn = {
@@ -22,8 +18,6 @@ type TUseIngredientsLogicReturn = {
   };
   getCount: (id: string) => number;
   handleTabClick: (tabName: string) => void;
-  handleSelectIngredient: (ingredient: TIngredient) => void;
-  handleCloseModal: () => void;
 };
 
 export const useIngredientsLogic = (
@@ -36,7 +30,6 @@ export const useIngredientsLogic = (
   const sauceSectionRef = useRef<HTMLDivElement>(null);
   const mainSectionRef = useRef<HTMLDivElement>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
   const burgerConstructorData = useSelector<RootState, TConstructorState>(
     ({ burgerConstructor }) => burgerConstructor
   );
@@ -102,14 +95,6 @@ export const useIngredientsLogic = (
     };
   }, []);
 
-  const handleSelectIngredient = (ingredient: TIngredient): void => {
-    dispatch(setCurrentIngredient(ingredient));
-  };
-
-  const handleCloseModal = (): void => {
-    dispatch(clearCurrentIngredient());
-  };
-
   return {
     containerRef,
     bunSectionRef,
@@ -119,7 +104,5 @@ export const useIngredientsLogic = (
     groups,
     getCount,
     handleTabClick,
-    handleSelectIngredient,
-    handleCloseModal,
   };
 };
