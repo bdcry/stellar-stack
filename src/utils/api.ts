@@ -30,11 +30,15 @@ export const fetchIngredientsFromApi = async (): Promise<TIngredient[]> => {
   return ingredientsData.data;
 };
 
-export const postOrderToApi = async (ingredientsIds: string[]): Promise<number> => {
+export const postOrderToApi = async (
+  ingredientsIds: string[],
+  token: string
+): Promise<number> => {
   const response = await request('orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${token}`,
     },
     body: JSON.stringify({ ingredients: ingredientsIds }),
   });

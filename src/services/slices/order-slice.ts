@@ -13,7 +13,17 @@ const initialState: TOrderState = {
   error: null,
 };
 
-export const postOrder = createAsyncThunk('order/postOrder', postOrderToApi);
+export const postOrder = createAsyncThunk(
+  'order/postOrder',
+  async (ids: string[]): Promise<number> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      throw new Error('No access token found');
+    }
+    const orderNumber = await postOrderToApi(ids, token);
+    return orderNumber;
+  }
+);
 
 const orderSlice = createSlice({
   name: 'order',

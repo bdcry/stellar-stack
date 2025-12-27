@@ -7,6 +7,7 @@ import { postOrder, reset } from '@/services/slices/order-slice';
 import { useAppDispatch, useAppSelector } from '@/services/store';
 import { useMemo, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
 
 import type { TFilling, TIngredient } from '@utils/types';
 
@@ -30,8 +31,10 @@ export const useConstructorLogic = (): TUseConstructorLogicReturn => {
   const bun = useAppSelector(({ burgerConstructor }) => burgerConstructor.bun);
   const fillings = useAppSelector(({ burgerConstructor }) => burgerConstructor.items);
   const allIngredients = useAppSelector(({ ingredients }) => ingredients.items);
+  const isAuth = useAppSelector(({ auth }) => auth.isAuth);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const total = useMemo((): number => {
     const fillingsTotal = fillings.reduce((acc, item) => acc + item.price, 0);
@@ -41,6 +44,12 @@ export const useConstructorLogic = (): TUseConstructorLogicReturn => {
 
   const handleOpenModal = (): void => {
     if (!bun || fillings.length === 0) return;
+
+    if (!isAuth) {
+      void navigate('/login');
+      return;
+    }
+
     const ids = [bun._id, ...fillings.map((item) => item._id), bun._id];
     void dispatch(postOrder(ids));
     setIsOrderModalOpen(true);

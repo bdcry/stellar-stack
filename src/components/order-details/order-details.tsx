@@ -10,7 +10,12 @@ const OrderDetails = (): React.JSX.Element => {
   return (
     <div className={styles.order_details}>
       {isLoading === 'loading' ? (
-        <Preloader />
+        <>
+          <h2 className="text text_type_main-default mb-5">
+            Подождите, оформляем булочки по вашему заказу...
+          </h2>
+          <Preloader />
+        </>
       ) : (
         <>
           <h2 className={`${styles.order_number} text text_type_digits-large`}>
