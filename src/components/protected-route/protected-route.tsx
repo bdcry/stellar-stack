@@ -1,13 +1,31 @@
 import { useAppSelector } from '@/services/store';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import type { JSX } from 'react';
 
-export const ProtectedRoute = (): JSX.Element => {
-  // если идёт запрос на бек для обработки пользователя, то показываем прелоадер
-  // если пользователь не найден или не зарегистрирован, то редирект на логин
-  // если маршрут оказывается не для авторизованного пользователя, а попадает на неё авторизованный, то мы должны редиректить авторизованного пользователя на предыдущий шаг из location.state или на главную страницу
+type IProtectedRouteProps = {
+  onlyUnAuth?: boolean;
+};
 
-  const isAuth = useAppSelector(({ auth }) => auth.isAuth);
-  return isAuth ? <Outlet /> : <Navigate to="/login" />;
+export const ProtectedRoute = ({
+  onlyUnAuth = false,
+}: IProtectedRouteProps): JSX.Element => {
+  const auth = useAppSelector(({ auth }) => auth);
+  const location = useLocation();
+
+  if (auth.status === 'loading') {
+    return <Preloader />;
+  }
+
+  if (!onlyUnAuth && !auth.isAuth) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  if (onlyUnAuth && auth.isAuth) {
+    const from = (location.state as { from?: string } | null)?.from ?? '/';
+    return <Navigate to={from} replace />;
+  }
+
+  return <Outlet />;
 };

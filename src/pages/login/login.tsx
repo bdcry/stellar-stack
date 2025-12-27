@@ -1,8 +1,8 @@
 import { login } from '@/services/slices/auth-slice';
 import { useAppDispatch, useAppSelector } from '@/services/store';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState, type JSX } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, type JSX } from 'react';
+import { Link } from 'react-router-dom';
 
 import type { TLoginData } from '@/utils/types';
 
@@ -10,19 +10,12 @@ import styles from './login.module.css';
 
 export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { isAuth, error } = useAppSelector((state) => state.auth);
+  const { error } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(true);
   const [form, setForm] = useState<TLoginData>({
     email: '',
     password: '',
   });
-
-  useEffect(() => {
-    if (isAuth) {
-      void navigate('/', { replace: true });
-    }
-  }, [isAuth]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });

@@ -25,11 +25,15 @@ export const App = (): JSX.Element => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/feed" element={<div>Ещё в разработке! Приходите позже</div>} />
+
+        <Route element={<ProtectedRoute onlyUnAuth />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />}>
             <Route index element={<ProfileForm />} />
