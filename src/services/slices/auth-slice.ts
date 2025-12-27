@@ -1,5 +1,6 @@
 import {
   getUserData,
+  logoutRequest,
   refreshAccessToken,
   signIn,
   signUp,
@@ -75,6 +76,15 @@ export const updateUser = createAsyncThunk(
     return response;
   }
 );
+
+export const logout = createAsyncThunk('auth/logout', async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) {
+    return null;
+  }
+  const response = await logoutRequest(refreshToken);
+  return response;
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -153,6 +163,23 @@ const authSlice = createSlice({
         }
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      // Logout
+      .addCase(logout.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.status = 'idle';
+        state.isAuth = false;
+        state.user = { email: '', name: '' };
+        state.error = null;
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      })
+      .addCase(logout.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error;
       });

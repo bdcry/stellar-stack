@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/services/store';
 import {
   BurgerIcon,
   ListIcon,
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom';
 import styles from './app-header.module.css';
 
 export const AppHeader = (): React.JSX.Element => {
+  const userInfo = useAppSelector(({ auth }) => auth);
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -27,7 +29,9 @@ export const AppHeader = (): React.JSX.Element => {
         </div>
         <Link to="/profile" className={`${styles.link} ${styles.link_position_last}`}>
           <ProfileIcon type="secondary" />
-          <p className="text text_type_main-default ml-2">Личный кабинет</p>
+          <p className="text text_type_main-default ml-2">
+            {userInfo.isAuth ? userInfo.user.name : 'Личный кабинет'}
+          </p>
         </Link>
       </nav>
     </header>

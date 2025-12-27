@@ -10,6 +10,9 @@ import { Login } from '../../pages/login/login';
 import { Profile } from '../../pages/profile/profile';
 import { Register } from '../../pages/register/register';
 import { ResetPassword } from '../../pages/reset-password/reset-password';
+import { OrderDetails } from '../profile/order-details';
+import { Orders } from '../profile/orders';
+import { ProfileForm } from '../profile/profile-form/profile-form';
 import { ProtectedRoute } from '../protected-route/protected-route';
 
 export const App = (): JSX.Element => {
@@ -28,8 +31,11 @@ export const App = (): JSX.Element => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/feed" element={<div>Ещё в разработке! Приходите позже</div>} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
-          {/* пока что просто заглушка. компонент и его вложенные пути добавлю позже */}
+          <Route path="/profile" element={<Profile />}>
+            <Route index element={<ProfileForm />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="orders/:number" element={<OrderDetails />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

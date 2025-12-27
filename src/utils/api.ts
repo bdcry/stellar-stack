@@ -10,7 +10,6 @@ import type {
 
 // requestPasswordReset → resetPasswordRequest
 // confirmPasswordReset → resetPasswordConfirm
-// requestLogout → logout
 
 export const API_URL = 'https://norma.education-services.ru/api/';
 
@@ -109,7 +108,7 @@ export const signIn = async (
   return data;
 };
 
-export const requestLogout = async (
+export const logoutRequest = async (
   refreshToken: string
 ): Promise<TApiResponseReset> => {
   const response = await request('auth/logout', {
