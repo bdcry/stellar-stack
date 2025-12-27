@@ -1,7 +1,7 @@
 import { logout } from '@/services/slices/auth-slice';
 import { useAppDispatch } from '@/services/store';
 import { Button } from '@krgaa/react-developer-burger-ui-components';
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import type { JSX } from 'react';
 
@@ -18,14 +18,28 @@ export const Profile = (): JSX.Element => {
     <div className={styles.profile}>
       <div className={styles.wrapper}>
         <div className={styles.sidebar}>
-          <Link className={styles.link} to="/profile">
+          <NavLink
+            to="/profile"
+            end
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.link} ${styles.link_active}`
+                : `${styles.link} text_color_inactive`
+            }
+          >
             <h2 className="text text_type_main-medium">Профиль</h2>
-          </Link>
-          <Link className={styles.link} to="/profile/orders">
-            <h2 className="text text_type_main-medium text_color_inactive">
-              История заказов
-            </h2>
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            end
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.link} ${styles.link_active}`
+                : `${styles.link} text_color_inactive`
+            }
+          >
+            <h2 className="text text_type_main-medium">История заказов</h2>
+          </NavLink>
           <Button
             type="secondary"
             size="medium"

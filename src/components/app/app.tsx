@@ -11,7 +11,7 @@ import { Profile } from '../../pages/profile/profile';
 import { Register } from '../../pages/register/register';
 import { ResetPassword } from '../../pages/reset-password/reset-password';
 import { OrderDetails } from '../profile/order-details';
-import { Orders } from '../profile/orders';
+import { Orders } from '../profile/orders/orders';
 import { ProfileForm } from '../profile/profile-form/profile-form';
 import { ProtectedRoute } from '../protected-route/protected-route';
 
