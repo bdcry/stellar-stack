@@ -63,3 +63,12 @@ export type TUpdateUserData = {
   email: string;
   password: string;
 };
+
+export type TResetPasswordData = {
+  email: string;
+};
+
+export type TResetPasswordFormData = {
+  password: string;
+  token: string;
+};
