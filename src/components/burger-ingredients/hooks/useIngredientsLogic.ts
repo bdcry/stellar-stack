@@ -1,8 +1,6 @@
+import { useAppSelector } from '@/services/store';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import type { TConstructorState } from '@/services/slices/constructor-slice';
-import type { RootState } from '@/services/store';
 import type { TIngredient } from '@utils/types';
 
 type TUseIngredientsLogicReturn = {
@@ -30,7 +28,7 @@ export const useIngredientsLogic = (
   const sauceSectionRef = useRef<HTMLDivElement>(null);
   const mainSectionRef = useRef<HTMLDivElement>(null);
 
-  const burgerConstructorData = useSelector<RootState, TConstructorState>(
+  const burgerConstructorData = useAppSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
 
