@@ -1,20 +1,24 @@
 import { register } from '@/services/slices/auth-slice';
 import { useAppDispatch, useAppSelector } from '@/services/store';
+import { useForm } from '@/shared/hooks/useForm';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useState, type JSX } from 'react';
 import { Link } from 'react-router-dom';
+
+import type { TRegisterData } from '@/utils/types';
 
 import styles from './register.module.css';
 
 export const Register = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPassword, setShowPassword] = useState(true);
   const fieldError = useAppSelector(({ auth }) => auth.error);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const { form, handleChange } = useForm<TRegisterData>({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

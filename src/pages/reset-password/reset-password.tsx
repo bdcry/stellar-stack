@@ -1,3 +1,4 @@
+import { useForm } from '@/shared/hooks/useForm';
 import { confirmPasswordReset } from '@/utils/api';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useState, type JSX } from 'react';
@@ -9,10 +10,13 @@ import styles from './reset-password.module.css';
 
 export const ResetPassword = (): JSX.Element => {
   const navigate = useNavigate();
-  const [form, setForm] = useState<TResetPasswordFormData>({
-    password: '',
-    token: '',
-  });
+  const { form, handleChange } = useForm<TResetPasswordFormData>(
+    {
+      password: '',
+      token: '',
+    },
+    { onFieldChange: () => setError(null) }
+  );
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -22,11 +26,6 @@ export const ResetPassword = (): JSX.Element => {
   if (!canReset) {
     return <Navigate to="/forgot-password" replace />;
   }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setError(null);
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();

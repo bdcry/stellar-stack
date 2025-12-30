@@ -1,5 +1,6 @@
 import { login } from '@/services/slices/auth-slice';
 import { useAppDispatch, useAppSelector } from '@/services/store';
+import { useForm } from '@/shared/hooks/useForm';
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useState, type JSX } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,14 +13,11 @@ export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { error } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(true);
-  const [form, setForm] = useState<TLoginData>({
+
+  const { form, handleChange } = useForm<TLoginData>({
     email: '',
     password: '',
   });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
