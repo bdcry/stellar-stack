@@ -1,4 +1,5 @@
 import { checkAuth } from '@/services/slices/auth-slice';
+import { fetchIngredients } from '@/services/slices/ingredients-slice';
 import { useAppDispatch } from '@/services/store';
 import { useEffect, type JSX } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -31,6 +32,10 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     void dispatch(checkAuth());
   }, []);
+
+  useEffect(() => {
+    void dispatch(fetchIngredients());
+  }, [dispatch]);
 
   const handleModalClose = (): void => {
     void navigate(-1);

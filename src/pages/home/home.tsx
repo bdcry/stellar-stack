@@ -1,22 +1,17 @@
-import { fetchIngredients } from '@/services/slices/ingredients-slice';
-import { useAppDispatch, useAppSelector } from '@/services/store';
+import { useAppSelector } from '@/services/store';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { type JSX, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
+import type { JSX } from 'react';
+
 import styles from './home.module.css';
 
 export const Home = (): JSX.Element => {
   const { items, status } = useAppSelector(({ ingredients }) => ingredients);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    void dispatch(fetchIngredients());
-  }, [dispatch]);
 
   return (
     <div className={styles.app}>
