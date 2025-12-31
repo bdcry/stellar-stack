@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: baseline;
+  align-self: flex-end;
+}

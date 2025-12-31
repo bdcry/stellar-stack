@@ -1,18 +1,12 @@
 import { useAppSelector } from '@/services/store';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
 import { useIngredientsLogic } from './hooks/useIngredientsLogic';
 import IngredientsCategory from './ingredients-category/ingredients-category';
 
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
-  const selectedIngredientData = useAppSelector(
-    ({ currentIngredient }) => currentIngredient.current
-  );
-
   const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
 
   const {
@@ -24,8 +18,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
     groups,
     getCount,
     handleTabClick,
-    handleSelectIngredient,
-    handleCloseModal,
   } = useIngredientsLogic(ingredients);
 
   return (
@@ -57,33 +49,15 @@ export const BurgerIngredients = (): React.JSX.Element => {
       </nav>
       <div className={styles.ingredients_list} ref={containerRef}>
         <div id="bun" ref={bunSectionRef}>
-          <IngredientsCategory
-            ingredientsItems={groups.bun}
-            onClick={handleSelectIngredient}
-            getCount={getCount}
-          />
+          <IngredientsCategory ingredientsItems={groups.bun} getCount={getCount} />
         </div>
         <div id="sauce" ref={sauceSectionRef}>
-          <IngredientsCategory
-            ingredientsItems={groups.sauce}
-            onClick={handleSelectIngredient}
-            getCount={getCount}
-          />
+          <IngredientsCategory ingredientsItems={groups.sauce} getCount={getCount} />
         </div>
         <div id="main" ref={mainSectionRef}>
-          <IngredientsCategory
-            ingredientsItems={groups.main}
-            onClick={handleSelectIngredient}
-            getCount={getCount}
-          />
+          <IngredientsCategory ingredientsItems={groups.main} getCount={getCount} />
         </div>
       </div>
-
-      {selectedIngredientData && (
-        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails {...selectedIngredientData} />
-        </Modal>
-      )}
     </section>
   );
 };

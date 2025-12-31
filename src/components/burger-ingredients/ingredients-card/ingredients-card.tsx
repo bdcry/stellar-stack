@@ -1,5 +1,6 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './ingredients-card.module.css';
 
@@ -14,7 +15,6 @@ type IngredientsCardProps = {
   image: string;
   name: string;
   price: number;
-  onClick: () => void;
   count?: number;
 };
 
@@ -24,9 +24,11 @@ const IngredientsCard = ({
   image,
   name,
   price,
-  onClick,
   count = 0,
 }: IngredientsCardProps): React.JSX.Element => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [{ isDrag }, dragRef] = useDrag<TDragItem, void, { isDrag: boolean }>({
     type: 'ingredient',
     item: { _id, type },
@@ -34,10 +36,15 @@ const IngredientsCard = ({
       isDrag: monitor.isDragging(),
     }),
   });
+
+  const handleClick = (): void => {
+    void navigate(`/ingredients/${_id}`, { state: { background: location } });
+  };
+
   return (
     <div
       className={styles.ingredients_card}
-      onClick={onClick}
+      onClick={handleClick}
       ref={dragRef as unknown as React.Ref<HTMLDivElement>}
       style={{ opacity: isDrag ? 0.5 : 1 }}
     >

@@ -1,15 +1,18 @@
-import type { TIngredient } from '@/utils/types';
+import { useAppSelector } from '@/services/store';
+import { useParams } from 'react-router-dom';
 
 import styles from './ingredient-details.module.css';
 
-const IngredientDetails = ({
-  name,
-  image,
-  calories,
-  proteins,
-  fat,
-  carbohydrates,
-}: TIngredient): React.JSX.Element => {
+const IngredientDetails = (): React.JSX.Element => {
+  const { ingredientId } = useParams<{ ingredientId: string }>();
+  const ingredients = useAppSelector((state) => state.ingredients.items);
+  const ingredient = ingredients.find((item) => item._id === ingredientId);
+
+  if (!ingredient) {
+    return <div>Ингредиент не найден</div>;
+  }
+
+  const { name, image, calories, proteins, fat, carbohydrates } = ingredient;
   return (
     <div className={styles.ingredient_details}>
       <div className={styles.main_info}>

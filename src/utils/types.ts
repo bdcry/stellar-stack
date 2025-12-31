@@ -27,3 +27,48 @@ export type TApiResponsePostOrder = {
 };
 
 export type TFilling = TIngredient & { uuid: string };
+
+export type TApiResponseReset = {
+  success: boolean;
+  message: string;
+};
+
+export type TApiResponseAuth = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TApiResponseToken = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TApiUserData = Omit<TApiResponseAuth, 'accessToken' | 'refreshToken'>;
+
+export type TLoginData = {
+  email: string;
+  password: string;
+};
+
+export type TRegisterData = TLoginData & { name: string };
+
+export type TUpdateUserData = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type TResetPasswordData = {
+  email: string;
+};
+
+export type TResetPasswordFormData = {
+  password: string;
+  token: string;
+};

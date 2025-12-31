@@ -1,0 +1,42 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+}
+
+.link {
+  padding: 17px 0;
+  text-decoration: none;
+
+  /* color: var(--text-primary-color); */
+}
+
+.link_active {
+  color: var(--text-primary-color);
+  text-decoration: none;
+}
+
+.content {
+  max-width: 480px;
+  max-height: 240px;
+}
+
+.logoutButton {
+  all: unset;
+  padding: 17px 0;
+  cursor: pointer;
+}
