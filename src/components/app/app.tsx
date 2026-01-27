@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/services/store';
 import { useEffect, type JSX } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
+import { Feed } from '../../pages/feed/feed';
 import { ForgotPassword } from '../../pages/forgot-password/forgot-password';
 import { Home } from '../../pages/home/home';
 import { IngredientDetailsPage } from '../../pages/ingredient-details/ingredient-details';
@@ -46,7 +47,7 @@ export const App = (): JSX.Element => {
       <Routes location={background ?? location}>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/feed" element={<div>Ещё в разработке! Приходите позже</div>} />
+          <Route path="/feed" element={<Feed />} />
           <Route path="/ingredients/:ingredientId" element={<IngredientDetailsPage />} />
 
           <Route element={<ProtectedRoute onlyUnAuth />}>

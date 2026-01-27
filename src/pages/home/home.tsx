@@ -15,10 +15,10 @@ export const Home = (): JSX.Element => {
 
   return (
     <div className={styles.app}>
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5`}>
         Соберите бургер
       </h1>
-      <main className={`${styles.main} pl-5 pr-5`}>
+      <main className={`${styles.main} pr-5 pr-5`}>
         {status === 'loading' || items.length === 0 ? (
           <Preloader />
         ) : (

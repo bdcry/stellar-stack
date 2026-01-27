@@ -1,0 +1,10 @@
+.feed_section {
+  color: var(--text-primary-color);
+}
+
+.feed_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 8px;
+}
