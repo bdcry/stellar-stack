@@ -7,6 +7,7 @@ import styles from './order-card.module.css';
 
 export const OrderCard = ({
   order,
+  onCardClick,
 }: {
   order: {
     ingredients: string[];
@@ -16,6 +17,7 @@ export const OrderCard = ({
     createdAt: string;
     updatedAt: string;
   };
+  onCardClick: (orderId: number) => void;
 }): JSX.Element => {
   const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
   const orderIngredientsImage = ingredients.filter((item) =>
@@ -29,7 +31,7 @@ export const OrderCard = ({
     0
   );
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={() => onCardClick(order.number)}>
       <div className={styles.content}>
         <div className={styles.info_row}>
           <span className="text text_type_main-default">#{order.number}</span>

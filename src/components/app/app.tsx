@@ -11,11 +11,13 @@ import { IngredientDetailsPage } from '../../pages/ingredient-details/ingredient
 import { Layout } from '../../pages/layout/layout';
 import { Login } from '../../pages/login/login';
 import { NotFound } from '../../pages/not-found/not-found';
+import { OrderInfoPage } from '../../pages/order-info/order-info';
 import { Profile } from '../../pages/profile/profile';
 import { Register } from '../../pages/register/register';
 import { ResetPassword } from '../../pages/reset-password/reset-password';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
+import { OrderInfo } from '../order-info/order-info';
 import { OrderDetails } from '../profile/order-details';
 import { Orders } from '../profile/orders/orders';
 import { ProfileForm } from '../profile/profile-form/profile-form';
@@ -48,6 +50,7 @@ export const App = (): JSX.Element => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/feed/:number" element={<OrderInfoPage />} />
           <Route path="/ingredients/:ingredientId" element={<IngredientDetailsPage />} />
 
           <Route element={<ProtectedRoute onlyUnAuth />}>
@@ -75,6 +78,14 @@ export const App = (): JSX.Element => {
             element={
               <Modal onClose={handleModalClose} title="Детали ингредиента">
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose} title="Детали заказа">
+                <OrderInfo />
               </Modal>
             }
           />

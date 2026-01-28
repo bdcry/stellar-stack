@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { OrderCard } from '../order-card/order-card';
 
 import type { JSX } from 'react';
@@ -29,10 +31,15 @@ const testData = {
 };
 
 export const OrdersFeed = (): JSX.Element => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleOrderClick = (orderId: number): void => {
+    void navigate(`/feed/${orderId}`, { state: { background: location } });
+  };
   return (
     <section className={styles.feed_section}>
       <div className={styles.feed_list}>
-        <OrderCard order={testData.orders[0]} />
+        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
       </div>
     </section>
   );
