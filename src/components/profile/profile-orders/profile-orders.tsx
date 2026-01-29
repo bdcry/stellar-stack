@@ -1,10 +1,9 @@
+import { OrderCard } from '@/components/order-card/order-card';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import { OrderCard } from '../order-card/order-card';
 
 import type { JSX } from 'react';
 
-import styles from './orders-feed.module.css';
+import styles from './profile-orders.module.css';
 
 const testData = {
   success: true,
@@ -30,25 +29,22 @@ const testData = {
   totalToday: 1,
 };
 
-export const OrdersFeed = (): JSX.Element => {
+export const ProfileOrders = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const handleOrderClick = (orderId: number): void => {
-    void navigate(`/feed/${orderId}`, { state: { background: location } });
+    void navigate(`/profile/orders/${orderId}`, { state: { background: location } });
   };
   return (
-    <section className={styles.feed_section}>
-      <div className={styles.feed_list}>
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
+    <div className={styles.wrapper}>
+      <div className={styles.list}>
         <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
         <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
         <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
         <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
         <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
       </div>
-    </section>
+    </div>
   );
 };

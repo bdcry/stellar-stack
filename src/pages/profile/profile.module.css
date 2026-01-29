@@ -1,15 +1,21 @@
 .profile {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
+  margin-top: 100px;
+  overflow: hidden;
 }
 
 .wrapper {
   display: flex;
+  justify-content: space-between;
   align-items: flex-start;
   gap: 60px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
 .sidebar {
@@ -21,8 +27,6 @@
 .link {
   padding: 17px 0;
   text-decoration: none;
-
-  /* color: var(--text-primary-color); */
 }
 
 .link_active {
@@ -31,12 +35,12 @@
 }
 
 .content {
-  max-width: 480px;
-  max-height: 240px;
+  height: 100vh;
+  overflow: auto;
 }
 
 .logoutButton {
   all: unset;
-  padding: 17px 0;
+  padding: 17px 0 !important;
   cursor: pointer;
 }

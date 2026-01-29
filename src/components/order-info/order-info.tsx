@@ -34,7 +34,6 @@ export const OrderInfo = (): JSX.Element => {
   const ingredientsDetails = ingredients.filter((ingr) =>
     testData.orders[0].ingredients.includes(ingr._id)
   );
-  console.log(ingredientsDetails);
   const status = testData.orders[0].status === 'done' ? 'Выполнен' : 'Готовится';
   return (
     <div className={styles.info}>

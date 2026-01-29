@@ -1,4 +1,5 @@
 .feed_section {
+  overflow: auto;
   color: var(--text-primary-color);
 }
 

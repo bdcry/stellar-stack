@@ -12,15 +12,15 @@ import { Layout } from '../../pages/layout/layout';
 import { Login } from '../../pages/login/login';
 import { NotFound } from '../../pages/not-found/not-found';
 import { OrderInfoPage } from '../../pages/order-info/order-info';
+import { ProfileOrderDetailsPage } from '../../pages/profile-order-details/profile-order-details';
 import { Profile } from '../../pages/profile/profile';
 import { Register } from '../../pages/register/register';
 import { ResetPassword } from '../../pages/reset-password/reset-password';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { OrderInfo } from '../order-info/order-info';
-import { OrderDetails } from '../profile/order-details';
-import { Orders } from '../profile/orders/orders';
 import { ProfileForm } from '../profile/profile-form/profile-form';
+import { ProfileOrders } from '../profile/profile-orders/profile-orders';
 import { ProtectedRoute } from '../protected-route/protected-route';
 
 export const App = (): JSX.Element => {
@@ -63,9 +63,12 @@ export const App = (): JSX.Element => {
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />}>
               <Route index element={<ProfileForm />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="orders/:number" element={<OrderDetails />} />
+              <Route path="orders" element={<ProfileOrders />} />
             </Route>
+            <Route
+              path="/profile/orders/:number"
+              element={<ProfileOrderDetailsPage />}
+            />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
@@ -83,6 +86,14 @@ export const App = (): JSX.Element => {
           />
           <Route
             path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose} title="Детали заказа">
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:number"
             element={
               <Modal onClose={handleModalClose} title="Детали заказа">
                 <OrderInfo />
