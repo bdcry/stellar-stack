@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/services/store';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { OrderCard } from '../order-card/order-card';
@@ -6,48 +7,20 @@ import type { JSX } from 'react';
 
 import styles from './orders-feed.module.css';
 
-const testData = {
-  success: true,
-  orders: [
-    {
-      ingredients: [
-        '643d69a5c3f7b9001cfa093c',
-        '643d69a5c3f7b9001cfa0941',
-        '643d69a5c3f7b9001cfa0949',
-        '643d69a5c3f7b9001cfa094a',
-        '643d69a5c3f7b9001cfa0944',
-        '643d69a5c3f7b9001cfa0945',
-        '643d69a5c3f7b9001cfa0942',
-      ],
-      _id: '',
-      status: 'done',
-      number: 12345,
-      createdAt: '2021-06-23T14:43:22.587Z',
-      updatedAt: '2021-06-23T14:43:22.603Z',
-    },
-  ],
-  total: 1,
-  totalToday: 1,
-};
-
 export const OrdersFeed = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
+  const orders = useAppSelector(({ feed }) => feed.orders);
+
   const handleOrderClick = (orderId: number): void => {
     void navigate(`/feed/${orderId}`, { state: { background: location } });
   };
   return (
     <section className={styles.feed_section}>
       <div className={styles.feed_list}>
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
-        <OrderCard order={testData.orders[0]} onCardClick={handleOrderClick} />
+        {orders.map((order) => (
+          <OrderCard key={order._id} order={order} onCardClick={handleOrderClick} />
+        ))}
       </div>
     </section>
   );

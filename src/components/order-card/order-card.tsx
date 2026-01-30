@@ -1,5 +1,8 @@
 import { useAppSelector } from '@/services/store';
-import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import {
+  CurrencyIcon,
+  FormattedDate,
+} from '@krgaa/react-developer-burger-ui-components';
 
 import type { JSX } from 'react';
 
@@ -16,33 +19,30 @@ export const OrderCard = ({
     number: number;
     createdAt: string;
     updatedAt: string;
+    name: string;
   };
   onCardClick: (orderId: number) => void;
 }): JSX.Element => {
   const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
-  const orderIngredientsImage = ingredients.filter((item) =>
+  const orderIngredients = ingredients.filter((item) =>
     order.ingredients.includes(item._id)
   );
 
-  const remainingCount = orderIngredientsImage.length - 6;
-
-  const orderTotalPrice = orderIngredientsImage.reduce(
-    (acc, item) => acc + item.price,
-    0
-  );
+  const remainingCount = orderIngredients.length - 6;
+  const orderTotalPrice = orderIngredients.reduce((acc, item) => acc + item.price, 0);
   return (
     <div className={styles.card} onClick={() => onCardClick(order.number)}>
       <div className={styles.content}>
         <div className={styles.info_row}>
           <span className="text text_type_main-default">#{order.number}</span>
           <span className="text text_type_main-default text_color_inactive">
-            Сегодня, 22:35
+            <FormattedDate date={new Date(order.createdAt)} />
           </span>
         </div>
-        <h2 className="text text_type_main-medium">Death Star Starship Main бургер</h2>
+        <h2 className="text text_type_main-medium">{order.name}</h2>
         <div className={styles.order_info}>
           <ul className={styles.ingredients_list}>
-            {orderIngredientsImage.slice(0, 6).map((ingredient, index) => (
+            {orderIngredients.slice(0, 6).map((ingredient, index) => (
               <li className={styles.ingredient_item} key={ingredient._id}>
                 <img
                   src={ingredient.image_mobile}
