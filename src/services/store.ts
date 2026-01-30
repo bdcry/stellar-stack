@@ -8,7 +8,13 @@ import currentIngredientReducer from './slices/currentIngredient-slice';
 import feedReducer, { feedActions } from './slices/feed-slice';
 import ingredientsReducer from './slices/ingredients-slice';
 import orderReducer from './slices/order-slice';
-import { feedWsConnect, feedWsDisconnect } from './ws-actions/actions';
+import profileFeedReducer, { profileFeedActions } from './slices/profile-feed-slice';
+import {
+  feedWsConnect,
+  feedWsDisconnect,
+  profileWsConnect,
+  profileWsDisconnect,
+} from './ws-actions/actions';
 
 import type { TypedUseSelectorHook } from 'react-redux';
 
@@ -19,6 +25,7 @@ const rootReducer = combineSlices({
   orderInfo: orderReducer,
   auth: authReducer,
   feed: feedReducer,
+  profileFeed: profileFeedReducer,
 });
 
 const feedsWsMiddleware = socketMiddleware({
@@ -30,9 +37,19 @@ const feedsWsMiddleware = socketMiddleware({
   onMessage: feedActions.wsMessage,
 });
 
+const profileWsMiddleware = socketMiddleware({
+  connect: profileWsConnect,
+  disconnect: profileWsDisconnect,
+  onOpen: profileFeedActions.wsOpen,
+  onClose: profileFeedActions.wsClose,
+  onError: profileFeedActions.wsError,
+  onMessage: profileFeedActions.wsMessage,
+});
+
 const storeSetup = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(feedsWsMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(feedsWsMiddleware, profileWsMiddleware),
 });
 
 export default storeSetup;

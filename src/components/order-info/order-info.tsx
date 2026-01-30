@@ -12,14 +12,27 @@ import styles from './order-info.module.css';
 export const OrderInfo = (): JSX.Element => {
   const { number } = useParams();
   const feedOrders = useAppSelector(({ feed }) => feed.orders);
-  const order = feedOrders.find((order) => order.number === Number(number));
-
+  const profileFeedOrders = useAppSelector(({ profileFeed }) => profileFeed.orders);
+  const order =
+    feedOrders.find((order) => order.number === Number(number)) ??
+    profileFeedOrders.find((order) => order.number === Number(number));
   const ingredients = useAppSelector(({ ingredients }) => ingredients.items);
+
   const ingredientsDetails = ingredients.filter((ingr) =>
     order?.ingredients.includes(ingr._id)
   );
-  const status = order?.status === 'done' ? 'Выполнен' : 'В работе';
+
+  const ingredientCountMap = new Map<string, number>();
+  order?.ingredients.forEach((ingrId) => {
+    ingredientCountMap.set(ingrId, (ingredientCountMap.get(ingrId) ?? 0) + 1);
+  });
+  const ingredientsCount = (ingrId: string): number =>
+    ingredientCountMap.get(ingrId) ?? 0;
+
   const orderTotalPrice = ingredientsDetails.reduce((acc, item) => acc + item.price, 0);
+
+  const status = order?.status === 'done' ? 'Выполнен' : 'В работе';
+
   return (
     <div className={styles.info}>
       <span
@@ -43,7 +56,9 @@ export const OrderInfo = (): JSX.Element => {
             />
             <span className="text text_type_main-default">{ingredient.name}</span>
             <div className={styles.price}>
-              <span className="text text_type_digits-default">2 x</span>
+              <span className="text text_type_digits-default">
+                {ingredientsCount(ingredient._id)} x
+              </span>
               <span className="text text_type_digits-default">{ingredient.price}</span>
               <CurrencyIcon type="primary" />
             </div>
@@ -52,7 +67,7 @@ export const OrderInfo = (): JSX.Element => {
       </ul>
       <div className={styles.info_row}>
         <span className="text text_type_main-default text_color_inactive">
-          <FormattedDate date={new Date(order?.createdAt)} />
+          {order?.createdAt && <FormattedDate date={new Date(order?.createdAt)} />}
         </span>
         <div className={styles.price}>
           <span className="text text_type_main-default">{orderTotalPrice}</span>
