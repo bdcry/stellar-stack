@@ -8,6 +8,8 @@ import type {
   TIngredient,
 } from './types';
 
+export const WS_URL = 'wss://norma.education-services.ru/orders';
+
 export const API_URL = 'https://norma.education-services.ru/api/';
 
 const checkResponse = <T>(res: Response): T => {

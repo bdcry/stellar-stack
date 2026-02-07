@@ -16,6 +16,7 @@ type TAuthState = {
     name: string;
   };
   isAuth: boolean;
+  isAuthChecked: boolean;
   status: 'idle' | 'loading' | 'failed';
   error: SerializedError | null;
 };
@@ -23,6 +24,7 @@ type TAuthState = {
 const initialState: TAuthState = {
   user: { email: '', name: '' },
   isAuth: false,
+  isAuthChecked: false,
   status: 'idle',
   error: null,
 };
@@ -103,11 +105,13 @@ const authSlice = createSlice({
         }
         state.status = 'idle';
         state.isAuth = payload !== null;
+        state.isAuthChecked = true;
         state.error = null;
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.status = 'failed';
         state.isAuth = false;
+        state.isAuthChecked = true;
         state.error = action.error;
       })
 

@@ -14,7 +14,7 @@ export const ProtectedRoute = ({
   const auth = useAppSelector(({ auth }) => auth);
   const location = useLocation();
 
-  if (auth.status === 'loading') {
+  if (!auth.isAuthChecked) {
     return <Preloader />;
   }
 

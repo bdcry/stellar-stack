@@ -1,0 +1,40 @@
+.stats_section {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.wrapper {
+  display: flex;
+  gap: 36px;
+}
+
+.orders_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ready_number {
+  color: #0cc;
+}
+
+.ready_orders,
+.orders_in_progress {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats_summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.color_number {
+  text-shadow:
+    0 0 8px rgb(51 51 255 / 50%),
+    0 0 16px rgb(160 51 255 / 30%);
+}
