@@ -29,7 +29,10 @@ export const OrderInfo = (): JSX.Element => {
   const ingredientsCount = (ingrId: string): number =>
     ingredientCountMap.get(ingrId) ?? 0;
 
-  const orderTotalPrice = ingredientsDetails.reduce((acc, item) => acc + item.price, 0);
+  const orderTotalPrice = ingredientsDetails.reduce(
+    (acc, item) => acc + item.price * ingredientsCount(item._id),
+    0
+  );
 
   const status = order?.status === 'done' ? 'Выполнен' : 'В работе';
 

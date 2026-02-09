@@ -29,7 +29,11 @@ export const OrderCard = ({
   );
 
   const remainingCount = orderIngredients.length - 6;
-  const orderTotalPrice = orderIngredients.reduce((acc, item) => acc + item.price, 0);
+  const orderTotalPrice = order.ingredients.reduce((total, ingredientId) => {
+    const ingredient = ingredients.find((item) => item._id === ingredientId);
+    return total + (ingredient?.price ?? 0);
+  }, 0);
+
   return (
     <div className={styles.card} onClick={() => onCardClick(order.number)}>
       <div className={styles.content}>
