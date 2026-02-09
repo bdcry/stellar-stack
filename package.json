@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://bdcry.github.io/stellar-stack",
   "scripts": {
     "build": "vite build",
     "commit": "cz",

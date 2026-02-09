@@ -1,38 +1,111 @@
-# Стартер на TypeScript для проекта Stellar Burger
+# Stellar Burgers
 
-## Процедура создания коммита с проверками
+Космическая бургерная — конструктор бургеров с drag-and-drop, личным кабинетом и лентой заказов в реальном времени.
 
-При создании коммита автоматически запускаются проверка линтерами `stylelint`, `eslint` и форматирование `prettier`.
+**Deploy:** [https://bdcry.github.io/stellar-stack/](https://bdcry.github.io/stellar-stack/)
 
-Если линтер обнаружит ошибки:
+---
 
-- Коммит создан не будет
-- Необходимо исправить все выявленные проблемы
-- Добавить исправленные файлы в индекс: `git add .`
-- Повторить коммит
+## О проекте
 
-**Рекомендация:**  
-Для предотвращения ошибок на этапе коммита предварительно выполните:  
-`npm run lint`. Это позволит выявить и исправить проблемы до создания коммита.
+Stellar Burgers — учебный проект Яндекс Практикума. SPA-приложение, в котором пользователь может:
 
-Есть также команды для запуска проверок по отдельности:
+- Собрать бургер из ингредиентов (drag-and-drop)
+- Просмотреть детали ингредиента в модальном окне
+- Оформить заказ (с авторизацией)
+- Отслеживать ленту заказов в реальном времени (WebSocket)
+- Управлять профилем и просматривать историю своих заказов
 
-- `npm run eslint` - запускает проверку линтера и исправляет проблемы, которые можно исправить автоматически,
-- `npm run stylelint` - запускает проверку литера для файлов стилей и исправляет проблемы, которые можно исправить автоматически,
-- `npm run prettier` - исправляет ошибки форматирования кода.
+---
 
-Можно добавить автозапуск этих команд при сохранении файла в вашей IDE.
+## Стек технологий
 
-Для создания коммита рекомендуется запускать команду `npm run commit`. Она позволяет обеспечить соответствие описаний коммитов [общепринятым соглашениям](https://www.conventionalcommits.org/en/v1.0.0/)
+| Категория | Технологии |
+|-----------|-----------|
+| **Язык** | TypeScript |
+| **UI** | React 19 |
+| **Роутинг** | React Router v7 |
+| **Стейт** | Redux Toolkit |
+| **Реалтайм** | WebSocket (middleware) |
+| **DnD** | react-dnd (HTML5 Backend) |
+| **Сборка** | Vite |
+| **Стили** | CSS Modules |
+| **Тесты** | Vitest (unit), Cypress (e2e) |
+| **Линтинг** | ESLint, Stylelint, Prettier |
+| **CI** | Husky + lint-staged |
+| **Деплой** | GitHub Pages |
 
-В проекте настроены алиасы, которые можно использовать при импорте модулей:
+---
+
+## Структура проекта
 
 ```
-	alias: {
-		'@': path.resolve(__dirname, './src'),
-		'@components': path.resolve(__dirname, './src/components'),
-		'@services': path.resolve(__dirname, './src/utils'),
-		'@pages': path.resolve(__dirname, './src/pages'),
-		'@utils': path.resolve(__dirname, './src/utils'),
-	},
+src/
+├── components/          # UI-компоненты
+│   ├── app/             # Корневой компонент + роутинг
+│   ├── app-header/      # Хедер с навигацией
+│   ├── burger-constructor/  # Конструктор бургера (DnD)
+│   ├── burger-ingredients/  # Список ингредиентов
+│   ├── ingredient-details/  # Детали ингредиента (модалка)
+│   ├── modal/           # Универсальная модалка (portal)
+│   ├── order-details/   # Детали заказа (модалка)
+│   ├── order-info/      # Информация о заказе
+│   ├── orders-feed/     # Лента заказов
+│   ├── order-stats/     # Статистика заказов
+│   └── protected-route/ # Защищённые маршруты
+├── pages/               # Страницы (home, login, register, feed, profile, ...)
+├── services/            # Redux
+│   ├── store.ts         # Конфигурация стора
+│   ├── slices/          # Слайсы (auth, constructor, ingredients, order, feed, ...)
+│   ├── middleware/       # WebSocket middleware
+│   └── ws-actions/      # Action creators для WS
+├── shared/hooks/        # Кастомные хуки
+└── utils/               # API, типы, утилиты
+```
+
+---
+
+## Скрипты
+
+| Команда | Описание |
+|---------|----------|
+| `npm run dev` | Запуск dev-сервера |
+| `npm run build` | Сборка в `dist/` |
+| `npm run deploy` | Деплой на GitHub Pages |
+| `npm run test` | Unit-тесты (Vitest) |
+| `npm run cypress` | E2E-тесты headless |
+| `npm run cypress:open` | E2E-тесты с GUI |
+| `npm run lint` | Все линтеры |
+| `npm run commit` | Коммит по Conventional Commits |
+
+---
+
+## Тестирование
+
+### Unit-тесты (Vitest)
+
+Покрыты все Redux-слайсы:
+- `auth-slice` — авторизация (checkAuth, login, register, updateUser, logout)
+- `constructor-slice` — конструктор бургера (setBun, addFilling, removeFilling, moveFilling)
+- `ingredients-slice` — загрузка ингредиентов (async thunk)
+- `order-slice` — создание заказа (async thunk)
+- `currentIngredient-slice` — текущий ингредиент
+- `feed-slice` — лента заказов (WebSocket)
+- `profile-feed-slice` — заказы пользователя (WebSocket)
+
+### E2E-тесты (Cypress)
+
+- Открытие/закрытие модалки ингредиента (крестик + overlay)
+- Drag-and-drop ингредиентов в конструктор
+- Создание заказа с проверкой номера
+
+---
+
+## Алиасы путей
+
+```ts
+'@'           → './src'
+'@components' → './src/components'
+'@pages'      → './src/pages'
+'@utils'      → './src/utils'
 ```
