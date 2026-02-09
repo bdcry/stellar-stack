@@ -32,10 +32,10 @@ const Modal = ({ children, title, onClose }: TModalProps): React.JSX.Element => 
   return createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      <div className={styles.modal}>
+      <div className={styles.modal} data-cy="modal">
         <div className={title ? styles.header : styles.header_no_title}>
           {title && <h2 className="text text_type_main-large">{title}</h2>}
-          <button className={styles.btn} onClick={onClose}>
+          <button className={styles.btn} onClick={onClose} data-cy="modal-close">
             <CloseIcon type="primary" />
           </button>
         </div>

@@ -47,6 +47,7 @@ const IngredientsCard = ({
       onClick={handleClick}
       ref={dragRef as unknown as React.Ref<HTMLDivElement>}
       style={{ opacity: isDrag ? 0.5 : 1 }}
+      data-cy="ingredient-card"
     >
       <img className={styles.image} src={image} alt={name} />
       <div className={styles.price}>

@@ -14,7 +14,7 @@ const IngredientDetails = (): React.JSX.Element => {
 
   const { name, image, calories, proteins, fat, carbohydrates } = ingredient;
   return (
-    <div className={styles.ingredient_details}>
+    <div className={styles.ingredient_details} data-cy="ingredient-details">
       <div className={styles.main_info}>
         <img className={styles.image} src={image} alt={name} />
         <h2 className={`${styles.title} text text_type_main-medium`}>{name}</h2>

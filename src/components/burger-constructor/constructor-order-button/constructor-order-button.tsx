@@ -15,6 +15,7 @@ const ConstructorOrderButton = React.memo(
         size="large"
         onClick={onOpen}
         disabled={disabled}
+        data-cy="order-button"
       >
         Оформить заказ
       </Button>
