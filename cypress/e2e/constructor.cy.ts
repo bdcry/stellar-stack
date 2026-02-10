@@ -1,15 +1,55 @@
+const SELECTOR = {
+  ingredientCard: '[data-cy="ingredient-card"]',
+  ingredientDetails: '[data-cy="ingredient-details"]',
+  modal: '[data-cy="modal"]',
+  modalClose: '[data-cy="modal-close"]',
+  modalOverlay: '[data-cy="modal-overlay"]',
+  topBunDropZone: '[data-cy="constructor-top-bun-drop-zone"]',
+  bottomBunDropZone: '[data-cy="constructor-bottom-bun-drop-zone"]',
+  fillingsDropZone: '[data-cy="constructor-fillings-drop-zone"]',
+  orderButton: '[data-cy="order-button"]',
+  orderDetails: '[data-cy="order-details"]',
+  orderNumber: '[data-cy="order-number"]',
+};
+
+const openFirstIngredientModal = (): void => {
+  cy.get(SELECTOR.ingredientCard).first().click();
+  cy.get(SELECTOR.ingredientDetails).should('be.visible');
+};
+
+const closeModalByButton = (): void => {
+  cy.get(SELECTOR.modalClose).click();
+  cy.get(SELECTOR.modal).should('not.exist');
+};
+
+const closeModalByOverlay = (): void => {
+  cy.get(SELECTOR.modalOverlay).click({ force: true });
+  cy.get(SELECTOR.modal).should('not.exist');
+};
+
+const dragIngredientTo = (ingredientIndex: number, dropZoneSelector: string): void => {
+  cy.get(SELECTOR.ingredientCard).eq(ingredientIndex).trigger('dragstart');
+  cy.get(dropZoneSelector).trigger('drop');
+};
+
+const buildBurger = (): void => {
+  dragIngredientTo(0, SELECTOR.topBunDropZone);
+  cy.get(SELECTOR.topBunDropZone).should('contain', 'Краторная булка N-200i (верх)');
+  cy.get(SELECTOR.bottomBunDropZone).should('contain', 'Краторная булка N-200i (низ)');
+  dragIngredientTo(4, SELECTOR.fillingsDropZone);
+  cy.get(SELECTOR.fillingsDropZone).should('contain', 'Соус фирменный Space Sauce');
+  dragIngredientTo(5, SELECTOR.fillingsDropZone);
+  cy.get(SELECTOR.fillingsDropZone).should(
+    'contain',
+    'Соус с шипами Антарианского плоскоходца'
+  );
+};
+
 describe('Burger Constructor', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/ingredients', {
-      fixture: 'ingredients.json',
-    });
-    cy.intercept('POST', '**/orders', {
-      fixture: 'order.json',
-    });
-    cy.window().then((win) => {
-      win.localStorage.setItem('refreshToken', 'fake-refresh-token');
-      win.localStorage.setItem('accessToken', 'Bearer fake-access-token');
-    });
+    cy.intercept('GET', '**/ingredients', { fixture: 'ingredients.json' });
+    cy.intercept('POST', '**/orders', { fixture: 'order.json' });
+
     cy.intercept('POST', '**/auth/token', {
       success: true,
       accessToken: 'Bearer fake-access-token',
@@ -19,80 +59,38 @@ describe('Burger Constructor', () => {
       success: true,
       user: { email: 'vitalik12@mail.ru', name: 'vitalik12' },
     });
-    cy.visit('/');
+
+    cy.visit('/', {
+      onBeforeLoad(win) {
+        win.localStorage.setItem('refreshToken', 'fake-refresh-token');
+        win.localStorage.setItem('accessToken', 'Bearer fake-access-token');
+      },
+    });
+  });
+
+  afterEach(() => {
+    cy.clearLocalStorage();
   });
 
   it('should open and close ingredient modal by close button', () => {
-    cy.get('[data-cy="ingredient-card"]').first().click();
-    cy.get('[data-cy="ingredient-details"]').should('be.visible');
-
-    cy.get('[data-cy="modal-close"]').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
+    openFirstIngredientModal();
+    closeModalByButton();
   });
 
   it('should open and close ingredient modal by overlay click', () => {
-    cy.get('[data-cy="ingredient-card"]').first().click();
-    cy.get('[data-cy="ingredient-details"]').should('be.visible');
-
-    cy.get('[data-cy="modal-overlay"]').click({ force: true });
-    cy.get('[data-cy="modal"]').should('not.exist');
+    openFirstIngredientModal();
+    closeModalByOverlay();
   });
 
   it('should add ingredients to the constructor', () => {
-    cy.get('[data-cy="ingredient-card"]').first().trigger('dragstart');
-    cy.get('[data-cy="constructor-top-bun-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-top-bun-drop-zone"]').should(
-      'contain',
-      'Краторная булка N-200i (верх)'
-    );
-    cy.get('[data-cy="constructor-bottom-bun-drop-zone"]').should(
-      'contain',
-      'Краторная булка N-200i (низ)'
-    );
-
-    cy.get('[data-cy="ingredient-card"]').eq(4).trigger('dragstart');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').should(
-      'contain',
-      'Соус фирменный Space Sauce'
-    );
-
-    cy.get('[data-cy="ingredient-card"]').eq(5).trigger('dragstart');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').should(
-      'contain',
-      'Соус с шипами Антарианского плоскоходца'
-    );
+    buildBurger();
   });
 
   it('should create an order and display order number', () => {
-    cy.get('[data-cy="ingredient-card"]').first().trigger('dragstart');
-    cy.get('[data-cy="constructor-top-bun-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-top-bun-drop-zone"]').should(
-      'contain',
-      'Краторная булка N-200i (верх)'
-    );
-    cy.get('[data-cy="constructor-bottom-bun-drop-zone"]').should(
-      'contain',
-      'Краторная булка N-200i (низ)'
-    );
+    buildBurger();
 
-    cy.get('[data-cy="ingredient-card"]').eq(4).trigger('dragstart');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').should(
-      'contain',
-      'Соус фирменный Space Sauce'
-    );
-
-    cy.get('[data-cy="ingredient-card"]').eq(5).trigger('dragstart');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').trigger('drop');
-    cy.get('[data-cy="constructor-fillings-drop-zone"]').should(
-      'contain',
-      'Соус с шипами Антарианского плоскоходца'
-    );
-
-    cy.get('[data-cy="order-button"]').click();
-    cy.get('[data-cy="order-details"]').should('be.visible');
-    cy.get('[data-cy="order-number"]').should('contain', '100637');
+    cy.get(SELECTOR.orderButton).click();
+    cy.get(SELECTOR.orderDetails).should('be.visible');
+    cy.get(SELECTOR.orderNumber).should('contain', '100637');
   });
 });
