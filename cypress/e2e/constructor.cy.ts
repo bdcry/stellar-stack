@@ -47,8 +47,10 @@ const buildBurger = (): void => {
 
 describe('Burger Constructor', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/ingredients', { fixture: 'ingredients.json' });
-    cy.intercept('POST', '**/orders', { fixture: 'order.json' });
+    cy.intercept('GET', '**/ingredients', { fixture: 'ingredients.json' }).as(
+      'getIngredients'
+    );
+    cy.intercept('POST', '**/orders', { fixture: 'order.json' }).as('createOrder');
 
     cy.intercept('POST', '**/auth/token', {
       success: true,
@@ -66,6 +68,8 @@ describe('Burger Constructor', () => {
         win.localStorage.setItem('accessToken', 'Bearer fake-access-token');
       },
     });
+
+    cy.wait('@getIngredients');
   });
 
   afterEach(() => {
@@ -90,6 +94,7 @@ describe('Burger Constructor', () => {
     buildBurger();
 
     cy.get(SELECTOR.orderButton).click();
+    cy.wait('@createOrder');
     cy.get(SELECTOR.orderDetails).should('be.visible');
     cy.get(SELECTOR.orderNumber).should('contain', '100637');
   });
