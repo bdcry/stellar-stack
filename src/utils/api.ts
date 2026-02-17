@@ -12,11 +12,11 @@ export const WS_URL = 'wss://norma.education-services.ru/orders';
 
 export const API_URL = 'https://norma.education-services.ru/api/';
 
-const checkResponse = <T>(res: Response): T => {
+const checkResponse = <T>(res: Response): Promise<T> => {
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
   }
-  return res.json() as T;
+  return res.json();
 };
 
 const request = <T>(endPoint: string, options?: RequestInit): Promise<T> => {

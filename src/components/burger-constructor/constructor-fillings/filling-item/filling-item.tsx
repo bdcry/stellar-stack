@@ -28,6 +28,7 @@ const FillingItem = ({ filling, index }: TFillingItemProps): React.JSX.Element =
     hover: (item: { uuid: string; index: number }) => {
       if (item.uuid !== filling.uuid) {
         dispatch(moveFilling({ fromIndex: item.index, toIndex: index }));
+        item.index = index;
       }
     },
   });
