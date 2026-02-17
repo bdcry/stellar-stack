@@ -26,7 +26,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   } = useConstructorLogic();
 
   return (
-    <section className={styles.burger_constructor}>
+    <section className={styles.burger_constructor} data-cy="constructor-drop-zone">
       <div className={styles.constructor_list}>
         {!bun ? (
           <div
@@ -34,6 +34,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             style={{
               border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
             }}
+            data-cy="constructor-top-bun-drop-zone"
           >
             <ConstructorPlaceholder text="Выберите булки" position="top" />
           </div>
@@ -43,6 +44,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             style={{
               border: isHoverBunTop ? '1px solid #4c4cff' : 'none',
             }}
+            data-cy="constructor-top-bun-drop-zone"
           >
             <ConstructorBun position="top" bun={bun} />
           </div>
@@ -51,6 +53,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
           className={styles.scroll_area}
           ref={dropRefFillings as unknown as React.Ref<HTMLDivElement>}
           style={{ border: isHoverFilling ? '1px solid #4c4cff' : 'none' }}
+          data-cy="constructor-fillings-drop-zone"
         >
           {fillings.length === 0 ? (
             <ConstructorPlaceholder text="Выберите начинку" />
@@ -64,6 +67,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             style={{
               border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
             }}
+            data-cy="constructor-bottom-bun-drop-zone"
           >
             <ConstructorPlaceholder text="Выберите булки" position="bottom" />
           </div>
@@ -73,6 +77,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             style={{
               border: isHoverBunBottom ? '1px solid #4c4cff' : 'none',
             }}
+            data-cy="constructor-bottom-bun-drop-zone"
           >
             <ConstructorBun position="bottom" bun={bun} />
           </div>

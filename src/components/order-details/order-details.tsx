@@ -8,7 +8,7 @@ const OrderDetails = (): React.JSX.Element => {
   const isLoading = useAppSelector(({ orderInfo }) => orderInfo.status);
 
   return (
-    <div className={styles.order_details}>
+    <div className={styles.order_details} data-cy="order-details">
       {isLoading === 'loading' ? (
         <>
           <h2 className="text text_type_main-default mb-5">
@@ -18,7 +18,10 @@ const OrderDetails = (): React.JSX.Element => {
         </>
       ) : (
         <>
-          <h2 className={`${styles.order_number} text text_type_digits-large`}>
+          <h2
+            className={`${styles.order_number} text text_type_digits-large`}
+            data-cy="order-number"
+          >
             {orderNumber}
           </h2>
           <p className={`${styles.order_id} text text_type_main-medium`}>
